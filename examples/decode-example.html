@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Decode Example | Examples | Unique Building Identification (UBID)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <style>
+    #myMap {
+      margin-bottom: 1em;
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">UBID</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Apps
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
+            <a class="dropdown-item" href="/apps/drawing-tools.html">Drawing Tools</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Examples <span class="sr-only">(current)</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
+            <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    <h1 class="pt-3">Decode Example</h1>
+    <p>The following example takes a code string and decodes it into a shape using the <a href="https://docs.microsoft.com/en-us/bingmaps/v8-web-control/modules/geojson-module/">GeoJSON Module</a>, then adds it to the map.</p>
+    <div id="myMap"></div>
+    <form autocomplete="off" class="pb-3">
+      <div class="form-group">
+        <label for="code">Code</label>
+        <input type="text" class="form-control" id="code" name="code" autocomplete="off" autofocus>
+      </div>
+      <details>
+        <summary>Code Area</summary>
+        <fieldset>
+          <legend>Bounding Box</legend>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="bbox-latitude-lo">Min. Latitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-latitude-lo" name="bbox-latitude-lo" readonly min="-180" max="180" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="bbox-longitude-lo">Min. Longitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-longitude-lo" name="bbox-longitude-lo" readonly min="-180" max="180" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="bbox-latitude-hi">Max. Latitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-latitude-hi" name="bbox-latitude-hi" readonly min="-90" max="90" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="bbox-longitude-hi">Max. Longitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-longitude-hi" name="bbox-longitude-hi" readonly min="-90" max="90" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Centroid</legend>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="centroid-latitude-lo">Min. Latitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="centroid-latitude-lo" name="centroid-latitude-lo" readonly min="-180" max="180" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="centroid-longitude-lo">Min. Longitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="centroid-longitude-lo" name="centroid-longitude-lo" readonly min="-180" max="180" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="centroid-latitude-hi">Max. Latitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="centroid-latitude-hi" name="centroid-latitude-hi" readonly min="-90" max="90" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="centroid-longitude-hi">Max. Longitude</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="centroid-longitude-hi" name="centroid-longitude-hi" readonly min="-90" max="90" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">&deg;</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </details>
+    </form>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="/assets/js/pnnl-buildingid.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    "use strict";
+
+    /**
+     * Callback to initialize map and event handlers.
+     *
+     * @return {void}
+     */
+    function getMap() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath"], function() {
+        // Initialize map.
+        var map = new Microsoft.Maps.Map("#myMap", {
+          disableBirdseye: true,
+          disableKeyboardInput: true,
+          disablePanning: true,
+          disableScrollWheelZoom: true,
+          disableStreetside: true,
+          disableStreetsideAutoCoverage: true,
+          disableZooming: true,
+          showLocateMeButton: false,
+          showMapTypeSelector: true,
+        });
+
+        // Reference to HTML element; provider of code string.
+        var codeElement = document.getElementById("code");
+
+        // Handler for when value of HTML element is modified.
+        var handleChange = (function() {
+          // Layer for shapes decoded from code string.
+          var codeLayer = new Microsoft.Maps.Layer("code");
+
+          // Add layer to map.
+          map.layers.insert(codeLayer);
+
+          return function(event) {
+            // When event is triggered, clear contents of layer.
+            codeLayer.clear();
+
+            // Get value of HTML element; the code string.
+            var code = codeElement.value.trim();
+
+            // Test if value is blank.
+            if (code.length == 0) {
+              codeElement.classList.remove("is-invalid");
+              codeElement.classList.remove("is-valid");
+
+              // If value is blank, then exit early.
+              return;
+            }
+
+            // Test if value is valid code string.
+            if (!UniqueBuildingIdentification.v3.isValid(code)) {
+              codeElement.classList.remove("is-valid");
+              codeElement.classList.add("is-invalid");
+
+              // If value is invalid code string, then exit early.
+              return;
+            }
+
+            // Value is valid code string.
+            codeElement.classList.remove("is-invalid");
+            codeElement.classList.add("is-valid");
+
+            // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+            var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+            // Convert {UniqueBuildingIdentification.v3.CodeArea} to GeoJSON object.
+            //
+            // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
+            var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea), {
+              polylineOptions: {
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+              polygonOptions: {
+                fillColor: "rgba(215, 118, 0, 0.4)",
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+            });
+
+            // Add GeoJSON object to map.
+            codeLayer.add(shapes);
+
+            // Calculate midpoint of (bounding box for) centroid.
+            var center = new Microsoft.Maps.Location(codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2), codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2));
+
+            // Initialize pushpin for midpoint of (bounding box for) centroid.
+            var pushpin = new Microsoft.Maps.Pushpin(center, {
+              color: "rgba(166, 63, 30, 0.8)",
+              title: code,
+            });
+
+            // Add pushpin to map.
+            codeLayer.add(pushpin);
+
+            // Adjust map view to display GeoJSON object.
+            map.setView({
+              bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(shapes),
+            });
+
+            return;
+          };
+        })();
+
+        // Register event handler.
+        ["change", "keyup"].forEach(function(type) {
+          codeElement.addEventListener(type, handleChange, false);
+        });
+
+        return;
+      });
+
+      return;
+    }
+  </script>
+  <script>
+    (function() {
+      "use strict";
+
+      window.addEventListener("load", function() {
+        // Disable form submission.
+        document.querySelector("form").addEventListener("submit", function(event) {
+          event.target.checkValidity();
+          event.preventDefault();
+          event.stopPropagation();
+
+          return false;
+        }, false);
+
+        // Update values of HTML elements for bounding box and centroid when
+        // value of HTML element for code string is modified.
+        ["change", "keyup"].forEach(function(type) {
+          document.getElementById("code").addEventListener(type, function(event) {
+            // Get value of HTML element; the code string.
+            var code = event.target.value.trim();
+
+            // Test if value is valid code string.
+            if (UniqueBuildingIdentification.v3.isValid(code)) {
+              // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+              var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+              // Update values of HTML elements.
+              document.getElementById("bbox-latitude-lo").value = codeArea.latitudeLo;
+              document.getElementById("bbox-latitude-hi").value = codeArea.latitudeHi;
+              document.getElementById("bbox-longitude-lo").value = codeArea.longitudeLo;
+              document.getElementById("bbox-longitude-hi").value = codeArea.longitudeHi;
+              document.getElementById("centroid-latitude-lo").value = codeArea.centerOfMass.latitudeLo;
+              document.getElementById("centroid-latitude-hi").value = codeArea.centerOfMass.latitudeHi;
+              document.getElementById("centroid-longitude-lo").value = codeArea.centerOfMass.longitudeLo;
+              document.getElementById("centroid-longitude-hi").value = codeArea.centerOfMass.longitudeHi;
+            } else {
+              // Clear values of HTML elements.
+              document.getElementById("bbox-latitude-lo").value = "";
+              document.getElementById("bbox-latitude-hi").value = "";
+              document.getElementById("bbox-longitude-lo").value = "";
+              document.getElementById("bbox-longitude-hi").value = "";
+              document.getElementById("centroid-latitude-lo").value = "";
+              document.getElementById("centroid-latitude-hi").value = "";
+              document.getElementById("centroid-longitude-lo").value = "";
+              document.getElementById("centroid-longitude-hi").value = "";
+            }
+
+            return false;
+          }, false);
+        });
+
+        return;
+      }, false);
+    })();
+  </script>
+  <script src="http://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
+</body>
+</html>

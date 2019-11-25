@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Home | Unique Building Identification (UBID)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <style>
+    .jumbotron {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      margin-bottom: 0;
+      background-color: #fff;
+    }
+    @media (min-width: 768px) {
+      .jumbotron {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+      }
+    }
+
+    .jumbotron p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jumbotron-heading {
+      font-weight: 300;
+    }
+
+    .jumbotron .container {
+      max-width: 48rem;
+    }
+
+    footer {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    footer p {
+      margin-bottom: .25rem;
+    }
+
+    .drawing-tools-img {
+      width: 100%;
+      height: 225px;
+      background-image: url("/assets/images/drawing-tools.png");
+      background-repeat: repeat;
+      background-position: fixed;
+      background-position: left top;
+    }
+
+    .decode-example-img {
+      width: 100%;
+      height: 225px;
+      background-image: url("/assets/images/decode-example.png");
+      background-repeat: repeat;
+      background-position: fixed;
+      background-position: left top;
+    }
+
+    .well-known-text-read-example-img {
+      width: 100%;
+      height: 225px;
+      background-image: url("/assets/images/well-known-text-read-example.png");
+      background-repeat: repeat;
+      background-position: fixed;
+      background-position: left top;
+    }
+  </style>
+</head>
+<body class="h-100">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">UBID</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Apps
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
+            <a class="dropdown-item" href="/apps/drawing-tools.html">Drawing Tools</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Examples
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
+            <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main role="main">
+    <section class="jumbotron text-center">
+      <div class="container">
+        <h1 class="jumbotron-heading">Unique Building Identification (UBID)</h1>
+        <p class="lead text-muted">Identify the location and extent of any physical object on the surface of the Earth.</p>
+        <p>
+          <a href="https://github.com/pnnl/buildingid" class="btn btn-primary my-2">Visit Us on GitHub</a>
+          <a href="https://buildingid.pnnl.gov" class="btn btn-secondary my-2">Learn more</a>
+        </p>
+      </div>
+    </section>
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <div class="bd-placeholder-img card-img-top drawing-tools-img"></div>
+              <div class="card-body">
+                <p class="card-text"><span class="font-weight-bold">Drawing Tools.</span> Draw an area on the map. Edit and erase an existing shape. Import UBID code strings and Well Known Text strings.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/apps/drawing-tools.html" class="btn btn-sm btn-outline-secondary">Try it Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <div class="bd-placeholder-img card-img-top decode-example-img"></div>
+              <div class="card-body">
+                <p class="card-text"><span class="font-weight-bold">Decode Example.</span> Decode a UBID code string, then view the shape on the map. View minimum and maximum coordinates for UBID code area.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/examples/decode-example.html" class="btn btn-sm btn-outline-secondary">Try it Now</a>
+                  </div>
+                  <small class="text-muted">Developer-friendly</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <div class="bd-placeholder-img card-img-top well-known-text-read-example-img"></div>
+              <div class="card-body">
+                <p class="card-text"><span class="font-weight-bold">Well Known Text Read Example.</span> Decode a Well Known Text string, encode UBID code string, then view the shape on the map.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/examples/well-known-text-read-example.html" class="btn btn-sm btn-outline-secondary">Try it Now</a>
+                  </div>
+                  <small class="text-muted">Developer-friendly</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="text-center">
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+</body>
+</html>
