@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Encode Example | Examples | Unique Building Identification (UBID)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <style>
+    #myMap {
+      margin-bottom: 1em;
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">UBID</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Apps
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
+            <a class="dropdown-item" href="/apps/drawing-tools.html">Drawing Tools</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Examples <span class="sr-only">(current)</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
+            <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+            <a class="dropdown-item" href="/examples/encode-example.html">Encode Example</a>
+            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    <h1 class="pt-3">Encode Example</h1>
+    <p>The following example takes six coordinates and encodes them as a code string, decodes the code string into a shape using the <a href="https://docs.microsoft.com/en-us/bingmaps/v8-web-control/modules/geojson-module/">GeoJSON Module</a>, then adds it to the map.</p>
+    <div id="myMap"></div>
+    <form autocomplete="off" class="pb-3">
+      <fieldset>
+        <legend>Bounding Box</legend>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="bbox-latitude-lo">Min. Latitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="bbox-latitude-lo" name="bbox-latitude-lo" min="-90" max="90" step="any" aria-describedby="bbox-latitude-lo-help">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+            <small id="bbox-latitude-lo-help" class="form-text text-muted">
+              Leave blank to use <span class="font-weight-bold">Centroid Latitude</span>.
+            </small>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="bbox-longitude-lo">Min. Longitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="bbox-longitude-lo" name="bbox-longitude-lo" min="-180" max="180" step="any" aria-describedby="bbox-longitude-lo-help">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+            <small id="bbox-longitude-lo-help" class="form-text text-muted">
+              Leave blank to use <span class="font-weight-bold">Centroid Longitude</span>.
+            </small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="bbox-latitude-hi">Max. Latitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="bbox-latitude-hi" name="bbox-latitude-hi" min="-90" max="90" step="any" aria-describedby="bbox-latitude-hi-help">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+            <small id="bbox-latitude-hi-help" class="form-text text-muted">
+              Leave blank to use <span class="font-weight-bold">Centroid Latitude</span>.
+            </small>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="bbox-longitude-hi">Max. Longitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="bbox-longitude-hi" name="bbox-longitude-hi" min="-90" max="90" step="any" aria-describedby="bbox-longitude-hi-help">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+            <small id="bbox-longitude-hi-help" class="form-text text-muted">
+              Leave blank to use <span class="font-weight-bold">Centroid Longitude</span>.
+            </small>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Centroid</legend>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="centroid-latitude-lo">Latitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="centroid-latitude" name="centroid-latitude" min="-90" max="90" step="any">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="centroid-longitude-lo">Longitude</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="centroid-longitude" name="centroid-longitude" min="-180" max="180" step="any">
+              <div class="input-group-append">
+                <div class="input-group-text">&deg;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Code</legend>
+        <div class="form-group">
+          <label for="code-length">Code Length</label>
+          <select class="custom-select" id="code-length" name="code-length">
+            <option value="8">8</option>
+            <option value="10" selected>10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+      </fieldset>
+    </form>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="/assets/js/pnnl-buildingid.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    "use strict";
+
+    /**
+     * Callback to initialize map and event handlers.
+     *
+     * @return {void}
+     */
+    function getMap() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath"], function() {
+        // Initialize map.
+        var map = new Microsoft.Maps.Map("#myMap", {
+          disableBirdseye: true,
+          disableKeyboardInput: true,
+          disablePanning: true,
+          disableScrollWheelZoom: true,
+          disableStreetside: true,
+          disableStreetsideAutoCoverage: true,
+          disableZooming: true,
+          showLocateMeButton: false,
+          showMapTypeSelector: true,
+        });
+
+        // References to HTML elements.
+        var bboxLatitudeLoElement = document.getElementById("bbox-latitude-lo");
+        var bboxLatitudeHiElement = document.getElementById("bbox-latitude-hi");
+        var bboxLongitudeLoElement = document.getElementById("bbox-longitude-lo");
+        var bboxLongitudeHiElement = document.getElementById("bbox-longitude-hi");
+        var centroidLatitudeElement = document.getElementById("centroid-latitude");
+        var centroidLongitudeElement = document.getElementById("centroid-longitude");
+        var codeLengthElement = document.getElementById("code-length");
+
+        // Accessor for value of given element as number (or default).
+        var getValueAsNumber = function(element, defaultValueElement) {
+          var value = element.value.trim();
+
+          element.setAttribute("placeholder", "");
+
+          if (value.length === 0) {
+            if ((defaultValueElement === undefined) || (defaultValueElement === null)) {
+              return null;
+            } else {
+              var defaultValue = getValueAsNumber(defaultValueElement);
+
+              if (defaultValue !== null) {
+                element.setAttribute("placeholder", String(defaultValue));
+              }
+
+              return defaultValue;
+            }
+          } else {
+            return Number(value);
+          }
+        };
+
+        // Handler for when value of HTML element is modified.
+        var handleChange = (function() {
+          // Layer for shapes decoded from code string.
+          var codeLayer = new Microsoft.Maps.Layer("code");
+
+          // Add layer to map.
+          map.layers.insert(codeLayer);
+
+          return function(event) {
+            // When event is triggered, clear contents of layer.
+            codeLayer.clear();
+
+            // Get values of HTML elements.
+            var bboxLatitudeLo = getValueAsNumber(bboxLatitudeLoElement, centroidLatitudeElement);
+            var bboxLatitudeHi = getValueAsNumber(bboxLatitudeHiElement, centroidLatitudeElement);
+            var bboxLongitudeLo = getValueAsNumber(bboxLongitudeLoElement, centroidLongitudeElement);
+            var bboxLongitudeHi = getValueAsNumber(bboxLongitudeHiElement, centroidLongitudeElement);
+            var centroidLatitude = getValueAsNumber(centroidLatitudeElement);
+            var centroidLongitude = getValueAsNumber(centroidLongitudeElement);
+            var codeLength = Number(codeLengthElement.value.trim());
+
+            // Test if minimum data requirements are satisfied.
+            var error = [
+              [bboxLatitudeLoElement, (bboxLatitudeLo !== null) && (bboxLatitudeHi !== null) && (centroidLatitude !== null) && (bboxLatitudeLo <= bboxLatitudeHi) && (bboxLatitudeLo <= centroidLatitude)],
+              [bboxLongitudeLoElement, (bboxLongitudeLo !== null) && (bboxLongitudeHi !== null) && (centroidLongitude !== null) && (bboxLongitudeLo <= bboxLongitudeHi) && (bboxLongitudeLo <= centroidLongitude)],
+              [bboxLatitudeHiElement, (bboxLatitudeLo !== null) && (bboxLatitudeHi !== null) && (centroidLatitude !== null) && (bboxLatitudeHi >= bboxLatitudeLo) && (bboxLatitudeHi >= centroidLatitude)],
+              [bboxLongitudeHiElement, (bboxLongitudeLo !== null) && (bboxLongitudeHi !== null) && (centroidLongitude !== null) && (bboxLongitudeHi >= bboxLongitudeLo) && (bboxLongitudeHi >= centroidLongitude)],
+              [centroidLatitudeElement, (bboxLatitudeLo !== null) && (bboxLatitudeHi !== null) && (centroidLatitude !== null) && (centroidLatitude >= bboxLatitudeLo) && (centroidLatitude <= bboxLatitudeHi)],
+              [centroidLongitudeElement, (bboxLongitudeLo !== null) && (bboxLongitudeHi !== null) && (centroidLongitude !== null) && (centroidLongitude >= bboxLongitudeLo) && (centroidLongitude <= bboxLongitudeHi)],
+            ].reduce(function(accumulator, array) {
+              if (array[1]) {
+                array[0].classList.remove("is-invalid");
+                array[0].classList.add("is-valid");
+
+                return accumulator;
+              } else {
+                array[0].classList.remove("is-valid");
+                array[0].classList.add("is-invalid");
+
+                return true;
+              }
+            }, false);
+
+            if (error) {
+              // If minimum data requirements are unsatisfied, then exit early.
+              return;
+            }
+
+            // Encode code string.
+            var code = UniqueBuildingIdentification.v3.encode(bboxLatitudeLo, bboxLongitudeLo, bboxLatitudeHi, bboxLongitudeHi, centroidLatitude, centroidLongitude, codeLength);
+
+            // Test if value is valid code string.
+            if (!UniqueBuildingIdentification.v3.isValid(code)) {
+              // If value is invalid code string, then exit early.
+              return;
+            }
+
+            // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+            var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+            // Convert {UniqueBuildingIdentification.v3.CodeArea} to GeoJSON object.
+            //
+            // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
+            var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea), {
+              polylineOptions: {
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+              polygonOptions: {
+                fillColor: "rgba(215, 118, 0, 0.4)",
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+            });
+
+            // Add GeoJSON object to map.
+            codeLayer.add(shapes);
+
+            // Calculate midpoint of (bounding box for) centroid.
+            var center = new Microsoft.Maps.Location(codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2), codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2));
+
+            // Initialize pushpin for midpoint of (bounding box for) centroid.
+            var pushpin = new Microsoft.Maps.Pushpin(center, {
+              color: "rgba(166, 63, 30, 0.8)",
+              title: code,
+            });
+
+            // Add pushpin to map.
+            codeLayer.add(pushpin);
+
+            // Adjust map view to display GeoJSON object.
+            map.setView({
+              bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(shapes),
+            });
+
+            return;
+          };
+        })();
+
+        // Register event handler.
+        ["change", "keyup"].forEach(function(type) {
+          [
+            bboxLatitudeLoElement,
+            bboxLatitudeHiElement,
+            bboxLongitudeLoElement,
+            bboxLongitudeHiElement,
+            centroidLatitudeElement,
+            centroidLongitudeElement,
+            codeLengthElement,
+          ].forEach(function(element) {
+            element.addEventListener(type, handleChange, false);
+          });
+        });
+
+        return;
+      });
+
+      return;
+    }
+  </script>
+  <script>
+    (function() {
+      "use strict";
+
+      window.addEventListener("load", function() {
+        // Disable form submission.
+        document.querySelector("form").addEventListener("submit", function(event) {
+          event.target.checkValidity();
+          event.preventDefault();
+          event.stopPropagation();
+
+          return false;
+        }, false);
+
+        return;
+      }, false);
+    })();
+  </script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
+</body>
+</html>
