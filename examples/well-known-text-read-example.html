@@ -209,6 +209,33 @@
           wktElement.addEventListener(type, handleChange, false);
         });
 
+        // Get query string of URL.
+        var params = new URLSearchParams(window.location.search);
+
+        // Array of query parameter names, corresponding to HTML element IDs.
+        var paramNames = [
+          "code-length",
+          "wkt",
+        ];
+
+        // Retain query parameter names that are present in query string of URL.
+        var filteredParamNames = paramNames.filter(function(paramName) {
+          return params.has(paramName);
+        });
+
+        // Test if at least 1 query parameter name is present.
+        if (filteredParamNames.length > 0) {
+          // Iterate over query parameter names that are present.
+          filteredParamNames.forEach(function(paramName) {
+            // Set the value of the corresponding HTML element.
+            document.getElementById(paramName).value = params.get(paramName);
+
+            return;
+          });
+
+          handleChange();
+        }
+
         return;
       });
 

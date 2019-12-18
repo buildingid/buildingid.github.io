@@ -187,6 +187,32 @@
           // Add layer to map.
           map.layers.insert(codeLayer);
 
+          var resetCodeAreaValues = function() {
+            document.getElementById("bbox-latitude-lo").value = "";
+            document.getElementById("bbox-latitude-hi").value = "";
+            document.getElementById("bbox-longitude-lo").value = "";
+            document.getElementById("bbox-longitude-hi").value = "";
+            document.getElementById("centroid-latitude-lo").value = "";
+            document.getElementById("centroid-latitude-hi").value = "";
+            document.getElementById("centroid-longitude-lo").value = "";
+            document.getElementById("centroid-longitude-hi").value = "";
+
+            return;
+          };
+
+          var setCodeAreaValues = function(codeArea) {
+            document.getElementById("bbox-latitude-lo").value = codeArea.latitudeLo;
+            document.getElementById("bbox-latitude-hi").value = codeArea.latitudeHi;
+            document.getElementById("bbox-longitude-lo").value = codeArea.longitudeLo;
+            document.getElementById("bbox-longitude-hi").value = codeArea.longitudeHi;
+            document.getElementById("centroid-latitude-lo").value = codeArea.centerOfMass.latitudeLo;
+            document.getElementById("centroid-latitude-hi").value = codeArea.centerOfMass.latitudeHi;
+            document.getElementById("centroid-longitude-lo").value = codeArea.centerOfMass.longitudeLo;
+            document.getElementById("centroid-longitude-hi").value = codeArea.centerOfMass.longitudeHi;
+
+            return;
+          };
+
           return function(event) {
             // When event is triggered, clear contents of layer.
             codeLayer.clear();
@@ -199,14 +225,26 @@
               codeElement.classList.remove("is-invalid");
               codeElement.classList.remove("is-valid");
 
+              // Clear values of HTML elements.
+              resetCodeAreaValues();
+
               // If value is blank, then exit early.
               return;
             }
 
             // Test if value is valid code string.
-            if (!UniqueBuildingIdentification.v3.isValid(code)) {
+            if (UniqueBuildingIdentification.v3.isValid(code)) {
+              // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+              var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+              // Update values of HTML elements.
+              setCodeAreaValues(codeArea);
+            } else {
               codeElement.classList.remove("is-valid");
               codeElement.classList.add("is-invalid");
+
+              // Clear values of HTML elements.
+              resetCodeAreaValues();
 
               // If value is invalid code string, then exit early.
               return;
@@ -263,6 +301,32 @@
           codeElement.addEventListener(type, handleChange, false);
         });
 
+        // Get query string of URL.
+        var params = new URLSearchParams(window.location.search);
+
+        // Array of query parameter names, corresponding to HTML element IDs.
+        var paramNames = [
+          "code",
+        ];
+
+        // Retain query parameter names that are present in query string of URL.
+        var filteredParamNames = paramNames.filter(function(paramName) {
+          return params.has(paramName);
+        });
+
+        // Test if at least 1 query parameter name is present.
+        if (filteredParamNames.length > 0) {
+          // Iterate over query parameter names that are present.
+          filteredParamNames.forEach(function(paramName) {
+            // Set the value of the corresponding HTML element.
+            document.getElementById(paramName).value = params.get(paramName);
+
+            return;
+          });
+
+          handleChange();
+        }
+
         return;
       });
 
@@ -282,43 +346,6 @@
 
           return false;
         }, false);
-
-        // Update values of HTML elements for bounding box and centroid when
-        // value of HTML element for code string is modified.
-        ["change", "keyup"].forEach(function(type) {
-          document.getElementById("code").addEventListener(type, function(event) {
-            // Get value of HTML element; the code string.
-            var code = event.target.value.trim();
-
-            // Test if value is valid code string.
-            if (UniqueBuildingIdentification.v3.isValid(code)) {
-              // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
-              var codeArea = UniqueBuildingIdentification.v3.decode(code);
-
-              // Update values of HTML elements.
-              document.getElementById("bbox-latitude-lo").value = codeArea.latitudeLo;
-              document.getElementById("bbox-latitude-hi").value = codeArea.latitudeHi;
-              document.getElementById("bbox-longitude-lo").value = codeArea.longitudeLo;
-              document.getElementById("bbox-longitude-hi").value = codeArea.longitudeHi;
-              document.getElementById("centroid-latitude-lo").value = codeArea.centerOfMass.latitudeLo;
-              document.getElementById("centroid-latitude-hi").value = codeArea.centerOfMass.latitudeHi;
-              document.getElementById("centroid-longitude-lo").value = codeArea.centerOfMass.longitudeLo;
-              document.getElementById("centroid-longitude-hi").value = codeArea.centerOfMass.longitudeHi;
-            } else {
-              // Clear values of HTML elements.
-              document.getElementById("bbox-latitude-lo").value = "";
-              document.getElementById("bbox-latitude-hi").value = "";
-              document.getElementById("bbox-longitude-lo").value = "";
-              document.getElementById("bbox-longitude-hi").value = "";
-              document.getElementById("centroid-latitude-lo").value = "";
-              document.getElementById("centroid-latitude-hi").value = "";
-              document.getElementById("centroid-longitude-lo").value = "";
-              document.getElementById("centroid-longitude-hi").value = "";
-            }
-
-            return false;
-          }, false);
-        });
 
         return;
       }, false);
