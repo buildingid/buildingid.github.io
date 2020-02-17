@@ -48,6 +48,11 @@
             <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
           </div>
         </li>
+        <li class="nav-item">
+            <div id="searchBoxContainer">
+              <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search">
+            </div>
+        </li>
       </ul>
     </div>
     <form class="form-inline">
@@ -586,18 +591,40 @@
       return Microsoft.Maps.SpatialMath.Geometry.bounds(shapes);
     }
 
+
+    function selectedSuggestion(result) {
+        //Remove previously selected suggestions from the map.
+        map.entities.clear();
+
+        //Show the suggestion as a pushpin and center map over it.
+        var pin = new Microsoft.Maps.Pushpin(result.location);
+        map.entities.push(pin);
+        map.setView({ bounds: result.bestView });
+    }
+
     /**
      * Callback to initialize map and event handlers.
      *
      * @return {void}
      */
     function getMap() {
-      Microsoft.Maps.loadModule(["Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText"], function() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText", "Microsoft.Maps.AutoSuggest"], function() {
         var map = new Microsoft.Maps.Map("#myMap", {
           disableBirdseye: true,
           disableStreetside: true,
           disableStreetsideAutoCoverage: true,
           showMapTypeSelector: true,
+        });
+
+        var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
+            manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function(result) {
+            //Remove previously selected suggestions from the map.
+            map.entities.clear();
+
+            //Show the suggestion as a pushpin and center map over it.
+            var pin = new Microsoft.Maps.Pushpin(result.location);
+            map.entities.push(pin);
+            map.setView({ bounds: result.bestView });
         });
 
         var tools = new Microsoft.Maps.DrawingTools(map);
