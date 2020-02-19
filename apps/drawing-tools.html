@@ -220,6 +220,15 @@
     }
 
     /**
+     * Clear Pushpins
+     *
+     * @param {Microsoft.Maps.Map} map
+     */
+    function clearPushPins(layer){
+      layer.clear();
+    }
+
+    /**
      * Encode {Microsoft.Maps.IPrimitive} as code string.
      *
      * @param {Microsoft.Maps.IPrimitive} data
@@ -599,7 +608,7 @@
      * @return {void}
      */
     function getMap() {
-      Microsoft.Maps.loadModule(["Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText", "Microsoft.Maps.AutoSuggest"], function() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.AutoSuggest", "Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText"], function() {
         var map = new Microsoft.Maps.Map("#myMap", {
           disableBirdseye: true,
           disableStreetside: true,
@@ -607,14 +616,17 @@
           showMapTypeSelector: true,
         });
 
+        var layer = new Microsoft.Maps.Layer();
+        map.layers.insert(layer);
+
         var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
             manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function(result) {
             //Remove previously selected suggestions from the map.
-            map.entities.clear();
-
+            clearPushPins(layer);
             //Show the suggestion as a pushpin and center map over it.
             var pin = new Microsoft.Maps.Pushpin(result.location);
-            map.entities.push(pin);
+            layer.add(pin);
+            //map.entities.push(pin);
             map.setView({ bounds: result.bestView });
         });
 
