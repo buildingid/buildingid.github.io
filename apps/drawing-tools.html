@@ -53,6 +53,9 @@
               <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search">
             </div>
         </li>
+        <li class="nav-item">
+          <input type = "button" class="btn btn-primary" value="clear" id = "clearBtn">
+        </li>
       </ul>
     </div>
     <form class="form-inline">
@@ -224,7 +227,7 @@
      *
      * @param {Microsoft.Maps.Map} map
      */
-    function clearPushPins(layer){
+    function clearPushPinsLayer(layer){
       layer.clear();
     }
 
@@ -616,13 +619,11 @@
           showMapTypeSelector: true,
         });
 
-        var layer = new Microsoft.Maps.Layer();
-        map.layers.insert(layer);
-
+        var layer = findOrCreateLayer(map, "search");
         var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
             manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function(result) {
             //Remove previously selected suggestions from the map.
-            clearPushPins(layer);
+            clearPushPinsLayer(layer);
             //Show the suggestion as a pushpin and center map over it.
             var pin = new Microsoft.Maps.Pushpin(result.location);
             layer.add(pin);
@@ -695,11 +696,19 @@
             return handleChangeWellKnownText();
           }, false);
 
+          document.getElementById("clearBtn").addEventListener("click", function(){
+            var layer = findOrCreateLayer(map, "search");
+            clearPushPinsLayer(layer);
+            document.getElementById("searchBox").value = "";
+          });
+          
           return;
         });
 
         return;
       });
+
+      
 
       return;
     }
@@ -722,6 +731,7 @@
 
         return;
       }, false);
+      
     })();
   </script>
   <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
