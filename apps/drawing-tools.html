@@ -47,15 +47,6 @@
             <a class="dropdown-item" href="/examples/encode-example.html">Encode Example</a>
             <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
           </div>
-        </li>
-        <li class="nav-item">
-            <div id="searchBoxContainer">
-              <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search">
-            </div>
-        </li>
-        <li class="nav-item">
-          <input type = "button" class="btn btn-primary" value="clear" id = "clearBtn">
-        </li>
       </ul>
     </div>
     <form class="form-inline">
@@ -75,7 +66,16 @@
       </div>
     </form>
   </nav>
+
   <div class="container-fluid d-flex flex-column h-100">
+    <div class="row">
+      <div class="col-md-6 offset-2" id="searchBoxContainer">
+        <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search">
+      </div>
+      <div class="col-md-2">
+        <input type = "button" class="btn btn-primary" value="clear" id = "clearBtn">
+      </div>
+    </div>
     <div class="row">
       <div class="col px-0">
         <div id="myMap"></div>
