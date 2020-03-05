@@ -49,15 +49,12 @@
           </div>
       </ul>
     </div>
-    <div id="searchBoxContainer">
+    <div id="autoSuggestContainer">
       <form class="form-inline">
-        <div class="input-group">
-          <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="searchBox"/>
-          <div class="input-group-append">
-            <input type="button" class="btn btn-primary" value="clear" id="clearBtn"/>
-          </div>
+        <div class="input-group mr-sm-3">
+          <input class="form-control" type="text" placeholder="Search by Location" aria-label="Search by Location" id="autoSuggest"/>
         </div>
-        <div class="input-group pl-md-3">
+        <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text">Code Length</span>
           </div>
@@ -616,16 +613,16 @@
           showMapTypeSelector: true,
         });
 
-        var layer = findOrCreateLayer(map, "search");
-        var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
-        manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function(result) {
-          //Remove previously selected suggestions from the map.
-          clearPushpinsLayer(layer);
-          //Show the suggestion as a pushpin and center map over it.
-          var pin = new Microsoft.Maps.Pushpin(result.location);
-          layer.add(pin);
-          //map.entities.push(pin);
-          map.setView({ bounds: result.bestView });
+        var manager = new Microsoft.Maps.AutosuggestManager({
+          map: map,
+        });
+
+        manager.attachAutosuggest("#autoSuggest", "#autoSuggestContainer", function(result) {
+          map.setView({
+            bounds: result.bestView,
+          });
+
+          return;
         });
 
         var tools = new Microsoft.Maps.DrawingTools(map);
@@ -692,12 +689,6 @@
 
             return handleChangeWellKnownText();
           }, false);
-
-          document.getElementById("clearBtn").addEventListener("click", function() {
-            var layer = findOrCreateLayer(map, "search");
-            clearPushpinsLayer(layer);
-            document.getElementById("searchBox").value = "";
-          });
 
           return;
         });
