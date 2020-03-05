@@ -195,7 +195,7 @@
 
       var pushpin = new Microsoft.Maps.Pushpin(center, pushpinOptions);
 
-      Microsoft.Maps.Events.addHandler(pushpin, "click", function (event) {
+      Microsoft.Maps.Events.addHandler(pushpin, "click", function(event) {
         if (infobox === null) {
           infobox = new Microsoft.Maps.Infobox(pushpin.getLocation(), {
             visible: false,
@@ -469,7 +469,7 @@
           aElement.appendChild(document.createTextNode("\u00A0"));
           thElement.appendChild(aElement);
 
-          aElement.addEventListener("click", function (event) {
+          aElement.addEventListener("click", function(event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -494,7 +494,7 @@
             aElement.setAttribute("href", "#");
             tdElement.appendChild(aElement);
 
-            aElement.addEventListener("click", function (event) {
+            aElement.addEventListener("click", function(event) {
               event.preventDefault();
               event.stopPropagation();
 
@@ -606,7 +606,7 @@
      * @return {void}
      */
     function getMap() {
-      Microsoft.Maps.loadModule(["Microsoft.Maps.AutoSuggest", "Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText"], function () {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.AutoSuggest", "Microsoft.Maps.DrawingTools", "Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath", "Microsoft.Maps.WellKnownText"], function() {
         var map = new Microsoft.Maps.Map("#myMap", {
           disableBirdseye: true,
           disableStreetside: true,
@@ -616,7 +616,7 @@
 
         var layer = findOrCreateLayer(map, "search");
         var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
-        manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function (result) {
+        manager.attachAutosuggest('#searchBox', '#searchBoxContainer', function(result) {
           //Remove previously selected suggestions from the map.
           clearPushpinsLayer(layer);
           //Show the suggestion as a pushpin and center map over it.
@@ -628,31 +628,31 @@
 
         var tools = new Microsoft.Maps.DrawingTools(map);
 
-        tools.showDrawingManager(function (manager) {
+        tools.showDrawingManager(function(manager) {
           manager.setOptions({
             drawingBarActions: Microsoft.Maps.DrawingTools.DrawingBarAction.edit | Microsoft.Maps.DrawingTools.DrawingBarAction.erase | Microsoft.Maps.DrawingTools.DrawingBarAction.fillStyle | Microsoft.Maps.DrawingTools.DrawingBarAction.polygon | Microsoft.Maps.DrawingTools.DrawingBarAction.strokeStyle,
           });
 
-          Microsoft.Maps.Events.addHandler(manager, "drawingStarted", function (event) {
+          Microsoft.Maps.Events.addHandler(manager, "drawingStarted", function(event) {
             removeIPrimitive(map, event.entity.id);
 
             return;
           });
 
-          Microsoft.Maps.Events.addHandler(manager, "drawingEnded", function (event) {
+          Microsoft.Maps.Events.addHandler(manager, "drawingEnded", function(event) {
             insertIPrimitive(map, event.entity.id, event);
 
             return;
           });
 
-          Microsoft.Maps.Events.addHandler(manager, "drawingErased", function (event) {
+          Microsoft.Maps.Events.addHandler(manager, "drawingErased", function(event) {
             removeIPrimitive(map, event.entity.id);
 
             return;
           });
 
-          ["click"].forEach(function (type) {
-            document.getElementById("codeSubmit").addEventListener(type, function (event) {
+          ["click"].forEach(function(type) {
+            document.getElementById("codeSubmit").addEventListener(type, function(event) {
               event.target.checkValidity();
               event.preventDefault();
               event.stopPropagation();
@@ -660,7 +660,7 @@
               return handleSubmitCode(map, manager);
             }, false);
 
-            document.getElementById("wellKnownTextSubmit").addEventListener(type, function (event) {
+            document.getElementById("wellKnownTextSubmit").addEventListener(type, function(event) {
               event.target.checkValidity();
               event.preventDefault();
               event.stopPropagation();
@@ -674,8 +674,8 @@
           return;
         });
 
-        ["change", "keyup"].forEach(function (type) {
-          document.getElementById("code").addEventListener(type, function (event) {
+        ["change", "keyup"].forEach(function(type) {
+          document.getElementById("code").addEventListener(type, function(event) {
             event.target.checkValidity();
             event.preventDefault();
             event.stopPropagation();
@@ -683,7 +683,7 @@
             return handleChangeCode();
           }, false);
 
-          document.getElementById("wellKnownText").addEventListener(type, function (event) {
+          document.getElementById("wellKnownText").addEventListener(type, function(event) {
             event.target.checkValidity();
             event.preventDefault();
             event.stopPropagation();
@@ -691,7 +691,7 @@
             return handleChangeWellKnownText();
           }, false);
 
-          document.getElementById("clearBtn").addEventListener("click", function () {
+          document.getElementById("clearBtn").addEventListener("click", function() {
             var layer = findOrCreateLayer(map, "search");
             clearPushpinsLayer(layer);
             document.getElementById("searchBox").value = "";
@@ -707,13 +707,13 @@
     }
   </script>
   <script>
-    (function () {
+    (function() {
       "use strict";
 
-      window.addEventListener("load", function () {
+      window.addEventListener("load", function() {
         // Disable form submission.
-        Array.prototype.slice.call(document.getElementsByTagName("form")).forEach(function (element) {
-          element.addEventListener("submit", function (event) {
+        Array.prototype.slice.call(document.getElementsByTagName("form")).forEach(function(element) {
+          element.addEventListener("submit", function(event) {
             event.target.checkValidity();
             event.preventDefault();
             event.stopPropagation();
