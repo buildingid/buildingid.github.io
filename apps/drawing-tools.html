@@ -1,14 +1,12 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
   <title>Drawing Tools | Apps | Unique Building Identification (UBID)</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css"
-    integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous"/>
   <style>
     #myMap {
       position: relative;
@@ -21,12 +19,10 @@
     }
   </style>
 </head>
-
 <body class="h-100">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">UBID</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -35,8 +31,7 @@
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item dropdown active">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Apps <span class="sr-only">(current)</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
@@ -44,8 +39,7 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Examples
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
@@ -56,10 +50,10 @@
       </ul>
     </div>
     <div id="searchBoxContainer">
-      <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search">
+      <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search"/>
     </div>
     <div>
-      <input type="button" class="btn btn-primary" value="clear" id="clearBtn">
+      <input type="button" class="btn btn-primary" value="clear" id="clearBtn"/>
     </div>
     <form class="form-inline">
       <div class="input-group">
@@ -78,7 +72,6 @@
       </div>
     </form>
   </nav>
-
   <div class="container-fluid d-flex flex-column h-100">
     <div class="row">
       <div class="col px-0">
@@ -94,14 +87,14 @@
                 <td style="width: 50px !important;">
                   <form class="form-inline py-1 pl-1">
                     <div class="form-group mb-0 w-100">
-                      <input type="submit" class="form-control w-100" id="codeSubmit" value="+" disabled>
+                      <input type="submit" class="form-control w-100" id="codeSubmit" value="+" disabled/>
                     </div>
                   </form>
                 </td>
                 <td colspan="2">
                   <form class="form-inline py-1" autocomplete="off">
                     <div class="form-group mb-0 w-100">
-                      <input type="text" class="form-control w-100" id="code" placeholder="Code" autocomplete="off">
+                      <input type="text" class="form-control w-100" id="code" placeholder="Code" autocomplete="off"/>
                     </div>
                   </form>
                 </td>
@@ -110,15 +103,14 @@
                 <td style="width: 50px !important;">
                   <form class="form-inline py-1 pl-1">
                     <div class="form-group mb-0 w-100">
-                      <input type="submit" class="form-control w-100" id="wellKnownTextSubmit" value="+" disabled>
+                      <input type="submit" class="form-control w-100" id="wellKnownTextSubmit" value="+" disabled/>
                     </div>
                   </form>
                 </td>
                 <td colspan="2">
                   <form class="form-inline py-1" autocomplete="off">
                     <div class="form-group mb-0 w-100">
-                      <input type="text" class="form-control w-100" id="wellKnownText" placeholder="Well Known Text"
-                        autocomplete="off">
+                      <input type="text" class="form-control w-100" id="wellKnownText" placeholder="Well Known Text" autocomplete="off"/>
                     </div>
                   </form>
                 </td>
@@ -129,12 +121,9 @@
       </div>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js"
-    integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
   <script src="/assets/js/pnnl-buildingid.js"></script>
   <script src="/assets/js/common.js"></script>
   <script>
@@ -611,8 +600,6 @@
       return Microsoft.Maps.SpatialMath.Geometry.bounds(shapes);
     }
 
-
-
     /**
      * Callback to initialize map and event handlers.
      *
@@ -716,8 +703,6 @@
         return;
       });
 
-
-
       return;
     }
   </script>
@@ -742,9 +727,6 @@
 
     })();
   </script>
-  <script
-    src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ"
-    async defer></script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
 </body>
-
 </html>
