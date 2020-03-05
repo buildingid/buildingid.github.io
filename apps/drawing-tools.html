@@ -50,27 +50,29 @@
       </ul>
     </div>
     <div id="searchBoxContainer">
-      <input class="form-control" type="text" id="searchBox" placeholder="Search" aria-label="Search"/>
-    </div>
-    <div>
-      <input type="button" class="btn btn-primary" value="clear" id="clearBtn"/>
-    </div>
-    <form class="form-inline">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Code Length</span>
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="searchBox"/>
+          <div class="input-group-append">
+            <input type="button" class="btn btn-primary" value="clear" id="clearBtn"/>
+          </div>
         </div>
-        <select class="custom-select" id="codeLength">
-          <option value="8">8</option>
-          <option value="10" selected>10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-          <option value="14">14</option>
-          <option value="15">15</option>
-        </select>
-      </div>
-    </form>
+        <div class="input-group pl-md-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Code Length</span>
+          </div>
+          <select class="custom-select" id="codeLength">
+            <option value="8">8</option>
+            <option value="10" selected>10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+      </form>
+    </div>
   </nav>
   <div class="container-fluid d-flex flex-column h-100">
     <div class="row">
