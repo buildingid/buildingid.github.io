@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Help | Unique Building Identification (UBID)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+</head>
+<body class="h-100">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">UBID</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Apps
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
+            <a class="dropdown-item" href="/apps/drawing-tools.html">Drawing Tools</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Examples
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
+            <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+            <a class="dropdown-item" href="/examples/encode-example.html">Encode Example</a>
+            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
+          </div>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/help.html">Help <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    <h1 class="pt-3">Help</h1>
+    <div class="bg-light border px-2 py-1">
+      <p class="font-weight-bold mb-0">Contents</p>
+      <ul class="mb-0">
+        <li>
+          <a href="#overview">Overview</a>
+        </li>
+        <li>
+          <a href="#usage-guides">Usage Guides</a>
+          <ul>
+            <li>
+              <a href="#apps">Apps</a>
+              <ul>
+                <li>
+                  <a href="#drawing-tools">Drawing Tools</a>
+                  <ul>
+                    <li>
+                      <a href="#using-the-navigation-bar">Using the Navigation Bar</a>
+                      <ul>
+                        <li>
+                          <a href="#search-by-location">Search by Location</a>
+                        </li>
+                        <li>
+                          <a href="#code-length">Code Length</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a href="#using-the-map">Using the Map</a>
+                      <ul>
+                        <li>
+                          <a href="#street-maps">Street Maps</a>
+                        </li>
+                        <li>
+                          <a href="#locate-me">Locate Me</a>
+                        </li>
+                        <li>
+                          <a href="#controlling-zoom-and-pan">Controlling Zoom and Pan</a>
+                        </li>
+                        <li>
+                          <a href="#bing-maps-drawing-tools">Bing Maps Drawing Tools</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a href="#using-the-data-input-form">Using the Data Input Form</a>
+                      <ul>
+                        <li>
+                          <a href="#code">Code</a>
+                        </li>
+                        <li>
+                          <a href="#well-known-text">Well Known Text</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#examples">Examples</a>
+              <ul>
+                <li>
+                  <a href="#decode-example">Decode Example</a>
+                </li>
+                <li>
+                  <a href="#encode-example">Encode Example</a>
+                </li>
+                <li>
+                  <a href="#well-known-text-example">Well Known Text Example</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <section>
+      <h2 class="anchored pt-3">Overview</h2>
+      <p>
+        This document is the info page for <a href="/">https://buildingid.github.io/</a>.
+      </p>
+      <h2 class="anchored">Usage Guides</h2>
+      <h3 class="anchored">Apps</h3>
+      <h4 class="anchored">Drawing Tools</h4>
+      <p class="mb-0">
+        The <a href="/apps/drawing-tools.html">Drawing Tools</a> app lets you:
+      </p>
+      <ul>
+        <li>draw shapes on a map;</li>
+        <li>edit and erase existing shapes; and,</li>
+        <li>import shapes from both <abbr title="Unique Building Identification">UBID</abbr> code strings and <abbr title="Well Known Text">WKT</abbr> vector geometry objects.</li>
+      </ul>
+      <img src="/assets/images/drawing-tools-annotated.png" class="w-100 border mb-3" alt="Screenshot of \"Drawing Tools\" user interface"/>
+      <p class="mb-0">
+        The user interface, shown above, is subdivided horizontally into 3 sections:
+      </p>
+      <ul>
+        <li>navigation bar,</li>
+        <li>map, and</li>
+        <li>data input form.</li>
+      </ul>
+      <h5 class="anchored">Using the Navigation Bar</h5>
+      <p>
+        The left-hand side of the navigation bar links to the homepage and to the other apps/examples.
+      </p>
+      <p class="mb-0">
+        The right-hand side of the navigation bar lets you:
+      </p>
+      <ul>
+        <li>search by location; and,</li>
+        <li>modify the <abbr title="Open Location Code">OLC</abbr> grid resolution level (viz., the "code length").</li>
+      </ul>
+      <h6 class="anchored">Search by Location</h6>
+      <p>
+        To search by location, type the name of the location into the "Search by Location" text input field (labelled <span class="badge badge-danger">1</span>).
+        The top 5 suggested locations are automatically displayed in a drop-down list.
+        Select a suggestion by clicking the corresponding list item.
+        When a list item is clicked, the map will automatically pan and zoom to the corresponding location.
+      </p>
+      <h6 class="anchored">Code Length</h6>
+      <p>
+        The <abbr title="Open Location Code">OLC</abbr> grid resolution level is selected using the "Code Length" drop-down menu (labelled <span class="badge badge-danger">2</span>).
+      </p>
+      <p class="font-italic">
+        Note:
+        The term "Code Length" is derived from the <abbr title="Open Location Code">OLC</abbr> specification and refers to the number of alphanumeric characters in the <abbr title="Open Location Code">OLC</abbr> string.
+      </p>
+      <h5 class="anchored">Using the Map</h5>
+      <p>
+        The map component is provided by <a href="https://www.bing.com/maps" target="_blank">Bing Maps</a>.
+        For in-depth guides, please refer to <a href="https://help.bing.microsoft.com/#apex/18/en-us/n2999/1" target="_blank">Bing Maps Help</a>.
+      </p>
+      <h6 class="anchored">Street Maps</h6>
+      <p>
+        Two street map views are available:
+        Road view, and
+        Aerial view.
+      </p>
+      <p>
+        Road view is the default map view and displays vector imagery of roads, buildings, and geography.
+      </p>
+      <p>
+        Aerial view overlays satellite imagery onto the map and highlights roads and major landmarks.
+        When in the aerial view, labels are enabled/disabled using the "Labels" slider control.
+      </p>
+      <p>
+        To change the street map view, use the drop-down menu in the top-right-hand corner of the map (labelled <span class="badge badge-danger">3</span>).
+      </p>
+      <h6 class="anchored">Locate Me</h6>
+      <p>
+        Pan the map to your current location by clicking the "Locate me" control on the right-hand side of the map (labelled <span class="badge badge-danger">4</span>).
+      </p>
+      <h6 class="anchored">Controlling Zoom and Pan</h6>
+      <p>
+        Zoom the map by scrolling or by clicking the "+" and "-" zoom controls on the right-hand side of the map (labelled <span class="badge badge-danger">5</span>).
+      </p>
+      <p>
+        Pan the map by dragging and dropping.
+      </p>
+      <h6 class="anchored">Bing Maps Drawing Tools</h6>
+      <p class="mb-0">
+        The toolbar (labelled <span class="badge badge-danger">6</span>) in the top-left-hand corner of the map provides the Bing Maps drawing tools:
+      </p>
+      <ul>
+        <li>Draw an area on the map</li>
+        <li>Edit an existing shape</li>
+        <li>Erase an existing shape</li>
+        <li>Choose color for the current shape's outline</li>
+        <li>Choose the current shape's fill color</li>
+      </ul>
+      <p>
+        To draw an area on the map, click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAUVBMVEVHcEwkJSL197FCQkFUVlIwMTG+26VdXV2EhYUPEA/L47fk55jn8t7U6MTt9ebP5b201ph/gn5OVUd9gnqp0Ija68yDhYLh7tXF36/8/Mv8/MjKbSXAAAAAAXRSTlMAQObYZgAAAJdJREFUeF7F0ccOhDAMRVHcUuht6v9/6FgRkYMiFrPi7qKjF0A0d+W9l8uj/6AES48lIgqn1lRXomj96zG0bzfP+w4gitbyHFWnQ9fQlIWEw1RhntrFGeupS3g9NbTp2Ou0dc7QpgR5WmMgyJ9TY0Mxv1ONTARJW2YvJ9G+XSSiZdsY8YQAwNhFjTXDwsH+Q/VQNetfvL8fmSULNeX16fYAAAAASUVORK5CYII=" alt="polygon"/> toolbar icon to enter drawing mode, then click the map once for each vertex of the shape.
+        Finally, when in drawing mode, press the <kbd>ESC</kbd> key or click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAUVBMVEVHcEwkJSL197FCQkFUVlIwMTG+26VdXV2EhYUPEA/L47fk55jn8t7U6MTt9ebP5b201ph/gn5OVUd9gnqp0Ija68yDhYLh7tXF36/8/Mv8/MjKbSXAAAAAAXRSTlMAQObYZgAAAJdJREFUeF7F0ccOhDAMRVHcUuht6v9/6FgRkYMiFrPi7qKjF0A0d+W9l8uj/6AES48lIgqn1lRXomj96zG0bzfP+w4gitbyHFWnQ9fQlIWEw1RhntrFGeupS3g9NbTp2Ou0dc7QpgR5WmMgyJ9TY0Mxv1ONTARJW2YvJ9G+XSSiZdsY8YQAwNhFjTXDwsH+Q/VQNetfvL8fmSULNeX16fYAAAAASUVORK5CYII=" alt="polygon"/> toolbar icon to save the new shape and exit drawing mode.
+      </p>
+      <p>
+        To edit an existing shape, click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAq1BMVEVHcEywsbK/wsGvrKri4+SoqKnc2tze3uD94YjZ2tu6u7zV1tfdr3+rkVi3nFOljWyykWrv0oSxnGTRycqfjYbbt2j52G7syny0nHz42ZP96pi8omz/8adnhm2zaWi1m5zNZ2e2RUV1a2HAr57KvLvNh4Wwiom0raf8zZiKgno4ckWWl5Q5aj6goaLjvIL3xYX63n7xxZL/2qmXfGH/8arg2rhOh17Eo2zi27vPKUL5AAAAAXRSTlMAQObYZgAAAJpJREFUKM/V0kcSgzAMBVBjbGOKAQOhk957T+5/snCA76wTbd9Io/kSIX9QzkgYjS0nQ5P6droY29jcbkvnGYUmXu/nfucxuEtT3R+d50ArdVs3FjQRF61MsDmxrntzoSktZWJjiwopQw6NRQN5/mJ5yHFs5bHKFe4jq8v1pLiPAw3Wwe3AcNqzIN54hjNZ08wwsi9qpexX3vADhmsJQFBGONcAAAAASUVORK5CYII=" alt="edit"/> toolbar icon to enter editing mode, then click the shape that you would like to edit.
+        Finally, when in editing mode, press the <kbd>ESC</kbd> key or click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAq1BMVEVHcEywsbK/wsGvrKri4+SoqKnc2tze3uD94YjZ2tu6u7zV1tfdr3+rkVi3nFOljWyykWrv0oSxnGTRycqfjYbbt2j52G7syny0nHz42ZP96pi8omz/8adnhm2zaWi1m5zNZ2e2RUV1a2HAr57KvLvNh4Wwiom0raf8zZiKgno4ckWWl5Q5aj6goaLjvIL3xYX63n7xxZL/2qmXfGH/8arg2rhOh17Eo2zi27vPKUL5AAAAAXRSTlMAQObYZgAAAJpJREFUKM/V0kcSgzAMBVBjbGOKAQOhk957T+5/snCA76wTbd9Io/kSIX9QzkgYjS0nQ5P6droY29jcbkvnGYUmXu/nfucxuEtT3R+d50ArdVs3FjQRF61MsDmxrntzoSktZWJjiwopQw6NRQN5/mJ5yHFs5bHKFe4jq8v1pLiPAw3Wwe3AcNqzIN54hjNZ08wwsi9qpexX3vADhmsJQFBGONcAAAAASUVORK5CYII=" alt="edit"/> toolbar icon to save the changes to the existing shape and exit editing mode.
+      </p>
+      <p>
+        To erase an existing shape, click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAe1BMVEVHcEyucG7c4uekXFrxxMLyyMfpo6HvubfvvbvwwL7t0dLqx8jpra3gkY+rZ2W0dXPkpaTim5jp5+rlwL/RjYysd3fLxMjOoaHotrb0zcy2fHrCtLm4mJrQ1tzaw8Xs2drJe3jbo6LcsrLEj47BhYTal5W3iYrRq6q9qq51UPc0AAAAAXRSTlMAQObYZgAAAMRJREFUKM/N0kkSgyAQBVCZQVGc5zgPuf8Jg5qNouukt69+U8Vvy/qDaWUUPpnNCJZDe295QQjhc3ZjjtSE9fSpafkmQohiqoyd/kGcrOiKjr8L52IAKDVym3DGI+Al8JwLNmJMW+Jdgo6/i56oBKg6Be3gS8xZgFefl8aSHCpG/eDrZLnrykJslhlm9W4QUIwZXhUAF7PC2KWUMjtTwEvNUnadlUJvePPnWUdpXKIa3rbVdHRCC3zouRnLGj6fCAx/f6Yf6WsLapTvXi4AAAAASUVORK5CYII=" alt="erase"/> toolbar icon to enter erase mode, then click the shape that you would like to erase.
+        Finally, when in erase mode, press the <kbd>ESC</kbd> key or click the <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAe1BMVEVHcEyucG7c4uekXFrxxMLyyMfpo6HvubfvvbvwwL7t0dLqx8jpra3gkY+rZ2W0dXPkpaTim5jp5+rlwL/RjYysd3fLxMjOoaHotrb0zcy2fHrCtLm4mJrQ1tzaw8Xs2drJe3jbo6LcsrLEj47BhYTal5W3iYrRq6q9qq51UPc0AAAAAXRSTlMAQObYZgAAAMRJREFUKM/N0kkSgyAQBVCZQVGc5zgPuf8Jg5qNouukt69+U8Vvy/qDaWUUPpnNCJZDe295QQjhc3ZjjtSE9fSpafkmQohiqoyd/kGcrOiKjr8L52IAKDVym3DGI+Al8JwLNmJMW+Jdgo6/i56oBKg6Be3gS8xZgFefl8aSHCpG/eDrZLnrykJslhlm9W4QUIwZXhUAF7PC2KWUMjtTwEvNUnadlUJvePPnWUdpXKIa3rbVdHRCC3zouRnLGj6fCAx/f6Yf6WsLapTvXi4AAAAASUVORK5CYII=" alt="erase"/> toolbar icon to exit erase mode.
+      </p>
+      <h5 class="anchored">Using the Data Input Form</h5>
+      <p>
+        Use the data input form to add <abbr title="Unique Building Identification">UBID</abbr> code strings and <abbr title="Well Known Text">WKT</abbr> vector geometry objects to the map.
+      </p>
+      <h6 class="anchored">Code</h6>
+      <p>
+        To add a <abbr title="Unique Building Identification">UBID</abbr> code string to the map, type the <abbr title="Unique Building Identification">UBID</abbr> code string into the "Code" text input field (labelled <span class="badge badge-danger">7</span>), then press the <kbd>ENTER</kbd> key or click the "+" button to the left of the "Code" text input field.
+      </p>
+      <p class="font-italic">
+        Note:
+        The <abbr title="Unique Building Identification">UBID</abbr> code string is automatically validated.
+        If the <abbr title="Unique Building Identification">UBID</abbr> code string is valid, then the "Code" text input field is highlighted in <span class="text-success">green</span> color.
+        If the <abbr title="Unique Building Identification">UBID</abbr> code string is invalid, then the "Code" text input field is highlighted in <span class="text-danger">red</span> color.
+      </p>
+      <h6 class="anchored">Well Known Text</h6>
+      <p>
+        To add a <abbr title="Well Known Text">WKT</abbr> vector geometry object to the map, type the <abbr title="Well Known Text">WKT</abbr> string into the "Well Known Text" text input field (labelled <span class="badge badge-danger">8</span>), then press the <kbd>ENTER</kbd> key or click the "+" button to the left of the "Well Known Text" text input field.
+      </p>
+      <p class="font-italic">
+        Note:
+        The <abbr title="Well Known Text">WKT</abbr> string is automatically validated.
+        If the <abbr title="Well Known Text">WKT</abbr> string is valid, then the "Well Known Text" text input field is highlighted in <span class="text-success">green</span> color.
+        If the <abbr title="Well Known Text">WKT</abbr> string is invalid, then the "Well Known Text" text input field is highlighted in <span class="text-danger">red</span> color.
+      </p>
+      <h3 class="anchored">Examples</h3>
+      <h4 class="anchored">Decode Example</h4>
+      <p class="font-italic">
+        Coming soon&hellip;
+      <p>
+      <h4 class="anchored">Encode Example</h4>
+      <p class="font-italic">
+        Coming soon&hellip;
+      <p>
+      <h4 class="anchored">Well Known Text Example</h4>
+      <p class="font-italic">
+        Coming soon&hellip;
+      <p>
+    </section>
+  </main>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="text-center">
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha256-E4RlfxwyJVmkkk0szw7LYJxuPlp6evtPSBDlWHsYYL8=" crossorigin="anonymous"></script>
+  <script>
+    (function() {
+      "use strict";
+
+      window.addEventListener("DOMContentLoaded", function(event) {
+        anchors.add(".anchored");
+
+        return;
+      }, false);
+    })();
+  </script>
+</body>
+</html>
