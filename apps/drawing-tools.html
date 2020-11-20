@@ -56,9 +56,9 @@
     <div id="autoSuggestContainer">
       <form class="form-inline">
         <div class="input-group mr-sm-3">
-          <input class="form-control" type="text" placeholder="Search by Location" aria-label="Search by Location" id="autoSuggest"/>
+          <input class="form-control py-0" type="text" placeholder="Search by Location" aria-label="Search by Location" id="autoSuggest"/>
         </div>
-        <div class="input-group">
+        <div class="input-group my-2 my-sm-0">
           <div class="input-group-prepend">
             <span class="input-group-text">Code Length</span>
           </div>
@@ -622,6 +622,21 @@
         });
 
         manager.attachAutosuggest("#autoSuggest", "#autoSuggestContainer", function(result) {
+          var layer = findOrCreateLayer(map, "autoSuggest");
+
+          var pushpin = new Microsoft.Maps.Pushpin(result.location, {
+            title: result.title,
+            subTitle: result.subtitle,
+          });
+
+          layer.add(pushpin);
+
+          Microsoft.Maps.Events.addHandler(pushpin, "dblclick", function(event) {
+            layer.remove(pushpin);
+
+            return;
+          });
+
           map.setView({
             bounds: result.bestView,
           });
@@ -636,20 +651,62 @@
             drawingBarActions: Microsoft.Maps.DrawingTools.DrawingBarAction.edit | Microsoft.Maps.DrawingTools.DrawingBarAction.erase | Microsoft.Maps.DrawingTools.DrawingBarAction.fillStyle | Microsoft.Maps.DrawingTools.DrawingBarAction.polygon | Microsoft.Maps.DrawingTools.DrawingBarAction.strokeStyle,
           });
 
+          var eventByEntityId = {};
+
+          var handlerId = null;
+
           Microsoft.Maps.Events.addHandler(manager, "drawingStarted", function(event) {
-            removeIPrimitive(map, event.entity.id);
+            handlerId = Microsoft.Maps.Events.addHandler(map, "dblclick", (function() {
+              var requiredInvokedCount = (manager.getDrawingMode() === Microsoft.Maps.DrawingTools.DrawingMode.polygon) ? 2 : 1;
+
+              var invokedCount = 0;
+
+              return function(dblclickEvent) {
+                invokedCount++;
+
+                if (invokedCount === requiredInvokedCount) {
+                  Microsoft.Maps.Events.invoke(manager, "drawingEnded", event);
+                }
+
+                return;
+              };
+            })());
+
+            var entityId = event.entity.id;
+
+            delete eventByEntityId[entityId];
+
+            removeIPrimitive(map, entityId);
 
             return;
           });
 
           Microsoft.Maps.Events.addHandler(manager, "drawingEnded", function(event) {
-            insertIPrimitive(map, event.entity.id, event);
+            if (handlerId === null) {
+              Microsoft.Maps.Events.removeHandler(handlerId);
+
+              handlerId = null;
+            }
+
+            var entityId = event.entity.id;
+
+            if ((eventByEntityId[entityId] === null) || (eventByEntityId[entityId] === undefined)) {
+              eventByEntityId[entityId] = event;
+
+              insertIPrimitive(map, entityId, event);
+            }
+
+            manager.setDrawingMode(Microsoft.Maps.DrawingTools.DrawingMode.none);
 
             return;
           });
 
           Microsoft.Maps.Events.addHandler(manager, "drawingErased", function(event) {
-            removeIPrimitive(map, event.entity.id);
+            var entityId = event.entity.id;
+
+            delete eventByEntityId[entityId];
+
+            removeIPrimitive(map, entityId);
 
             return;
           });
