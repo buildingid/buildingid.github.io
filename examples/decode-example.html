@@ -104,6 +104,26 @@
               </div>
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="bbox-area-ft2">Area</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-area-ft2" name="bbox-area-ft2" readonly>
+                <div class="input-group-append">
+                  <div class="input-group-text">ft<sup>2</sup></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="bbox-area-m2">Area</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="bbox-area-m2" name="bbox-area-m2" readonly min="-90" max="90" step="any">
+                <div class="input-group-append">
+                  <div class="input-group-text">m<sup>2</sup></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </fieldset>
         <fieldset>
           <legend>Centroid</legend>
@@ -191,6 +211,8 @@
           map.layers.insert(codeLayer);
 
           var resetCodeAreaValues = function() {
+            document.getElementById("bbox-area-ft2").value = "";
+            document.getElementById("bbox-area-m2").value = "";
             document.getElementById("bbox-latitude-lo").value = "";
             document.getElementById("bbox-latitude-hi").value = "";
             document.getElementById("bbox-longitude-lo").value = "";
@@ -204,6 +226,10 @@
           };
 
           var setCodeAreaValues = function(codeArea) {
+            var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea));
+
+            document.getElementById("bbox-area-ft2").value = Microsoft.Maps.SpatialMath.Geometry.area(shapes, Microsoft.Maps.SpatialMath.AreaUnits.SquareFeet);
+            document.getElementById("bbox-area-m2").value = Microsoft.Maps.SpatialMath.Geometry.area(shapes, Microsoft.Maps.SpatialMath.AreaUnits.SquareMeters);
             document.getElementById("bbox-latitude-lo").value = codeArea.latitudeLo;
             document.getElementById("bbox-latitude-hi").value = codeArea.latitudeHi;
             document.getElementById("bbox-longitude-lo").value = codeArea.longitudeLo;
