@@ -403,9 +403,9 @@
           bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(shapes),
         });
 
-        manager.add(shapes[0]);
-        Microsoft.Maps.Events.invoke(manager, "drawingStarted", shapes[0]);
-        Microsoft.Maps.Events.invoke(manager, "drawingEnded", shapes[0]);
+        manager.add(shapes);
+        Microsoft.Maps.Events.invoke(manager, "drawingStarted", Array.isArray(shapes) ? shapes[0] : shapes);
+        Microsoft.Maps.Events.invoke(manager, "drawingEnded", Array.isArray(shapes) ? shapes[0] : shapes);
 
         return true;
       }
