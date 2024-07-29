@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Cross-reference Example | Examples | Unique Building Identification (UBID)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <style>
+    #myMap {
+      margin-bottom: 1em;
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">UBID</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownApps" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Apps
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownApps">
+            <a class="dropdown-item" href="/apps/drawing-tools.html">Drawing Tools</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExamples" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Examples <span class="sr-only">(current)</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
+            <a class="dropdown-item" href="/examples/crossref-example.html">Cross-reference Example</a>
+            <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+            <a class="dropdown-item" href="/examples/encode-example.html">Encode Example</a>
+            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/help.html">Help</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container">
+    <h1 class="pt-3">Cross-reference Example</h1>
+    <p>The following example takes 2 code strings, decodes them into shapes using the <a href="https://docs.microsoft.com/en-us/bingmaps/v8-web-control/modules/geojson-module/">GeoJSON Module</a>, adds them to the map, and then quantifies their similarity.</p>
+    <div id="myMap"></div>
+    <form autocomplete="off" class="pb-3">
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="code">Code 1</label>
+          <input type="text" class="form-control" id="code1" name="code1" autocomplete="off">
+        </div>
+        <div class="form-group col-6">
+          <label for="code">Code 2</label>
+          <input type="text" class="form-control" id="code2" name="code2" autocomplete="off">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12">
+          <label for="code">Similarity</label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="similarity" name="similarity" autocomplete="off" readonly>
+            <div class="input-group-append">
+              <div class="input-group-text">%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="/assets/js/pnnl-buildingid.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    "use strict";
+
+    /**
+     * Callback to initialize map and event handlers.
+     *
+     * @return {void}
+     */
+    function getMap() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath"], function() {
+        // Initialize map.
+        var map = new Microsoft.Maps.Map("#myMap", {
+          disableBirdseye: true,
+          disableKeyboardInput: true,
+          disablePanning: true,
+          disableScrollWheelZoom: true,
+          disableStreetside: true,
+          disableStreetsideAutoCoverage: true,
+          disableZooming: true,
+          showLocateMeButton: false,
+          showMapTypeSelector: true,
+        });
+
+        // Reference to HTML elements; providers of code strings.
+        var code1Element = document.getElementById("code1");
+        var code2Element = document.getElementById("code2");
+
+        // Layers for shapes decoded from code string.
+        var code1Layer = new Microsoft.Maps.Layer("code1");
+        var code2Layer = new Microsoft.Maps.Layer("code2");
+
+        // Add layer to map.
+        map.layers.insert(code1Layer);
+        map.layers.insert(code2Layer);
+
+        // Reference to HTML element for Jaccard similarity coefficient.
+        var similarityElement = document.getElementById("similarity");
+
+        // Calculate the Jaccard similarity coefficient and update the value of
+        // the HTML element.
+        var updateSimilarity = function() {
+          // Only calculate the Jaccard similarity coefficient if both code
+          // strings are valid.
+          if (code1Element.classList.contains("is-valid") && code2Element.classList.contains("is-valid")) {
+            // Decode code strings to {UniqueBuildingIdentification.v3.CodeArea}s.
+            var codeArea1 = UniqueBuildingIdentification.v3.decode(code1Element.value);
+            var codeArea2 = UniqueBuildingIdentification.v3.decode(code2Element.value);
+
+            // Convert {UniqueBuildingIdentification.v3.CodeArea}s to GeoJSON objects.
+            //
+            // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
+            var shapes1 = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea1));
+            var shapes2 = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea2));
+
+            // Calculate area of intersection.
+            var areaOfIntersection = Microsoft.Maps.SpatialMath.Geometry.area(Microsoft.Maps.SpatialMath.Geometry.intersection(shapes1, shapes2));
+
+            // Calculate area of union.
+            var areaOfUnion = Microsoft.Maps.SpatialMath.Geometry.area(Microsoft.Maps.SpatialMath.Geometry.union(shapes1, shapes2));
+
+            // Calculate "intersection over union" and round to the nearest percentage.
+            similarityElement.value = Math.round((areaOfIntersection / areaOfUnion) * 100.0);
+          } else {
+            similarityElement.value = null;
+          }
+
+          return;
+        }
+
+        // Handler for when value of HTML element is modified.
+        var handleChange = function() {
+          // When event is triggered, clear contents of layer.
+          if (this.getAttribute("name") === "code1") {
+            code1Layer.clear();
+          } else if (this.getAttribute("name") === "code2") {
+            code2Layer.clear();
+          }
+
+          // Get value of HTML element; the code string.
+          var code = this.value.trim();
+
+          // Test if value is blank.
+          if (code.length == 0) {
+            this.classList.remove("is-invalid");
+            this.classList.remove("is-valid");
+
+            updateSimilarity();
+
+            // If value is blank, then exit early.
+            return;
+          }
+
+          // Test if value is valid code string.
+          if (UniqueBuildingIdentification.v3.isValid(code)) {
+            // Do nothing.
+          } else {
+            this.classList.remove("is-valid");
+            this.classList.add("is-invalid");
+
+            updateSimilarity();
+
+            // If value is invalid code string, then exit early.
+            return;
+          }
+
+          // Value is valid code string.
+          this.classList.remove("is-invalid");
+          this.classList.add("is-valid");
+
+          // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+          var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+          // Convert {UniqueBuildingIdentification.v3.CodeArea} to GeoJSON object.
+          //
+          // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
+          var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea), {
+            polylineOptions: {
+              strokeColor: "rgba(215, 118, 0, 1.0)",
+              strokeThickness: 3,
+            },
+            polygonOptions: {
+              fillColor: "rgba(215, 118, 0, 0.4)",
+              strokeColor: "rgba(215, 118, 0, 1.0)",
+              strokeThickness: 3,
+            },
+          });
+
+          // Add GeoJSON object to map.
+          if (this.getAttribute("name") === "code1") {
+            code1Layer.add(shapes);
+          } else if (this.getAttribute("name") === "code2") {
+            code2Layer.add(shapes);
+          }
+
+          // Calculate midpoint of (bounding box for) centroid.
+          var center = new Microsoft.Maps.Location(codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2), codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2));
+
+          // Initialize pushpin for midpoint of (bounding box for) centroid.
+          var pushpin = new Microsoft.Maps.Pushpin(center, {
+            color: "rgba(166, 63, 30, 0.8)",
+            title: code,
+          });
+
+          // Add pushpin to map.
+          if (this.getAttribute("name") === "code1") {
+            code1Layer.add(pushpin);
+          } else if (this.getAttribute("name") === "code2") {
+            code2Layer.add(pushpin);
+          }
+
+          // Adjust map view to display GeoJSON object.
+          var primitives = [];
+          if (code1Layer.getPrimitives().length > 0) {
+            primitives.push(Microsoft.Maps.SpatialMath.locationRectToPolygon(Microsoft.Maps.SpatialMath.Geometry.bounds(code1Layer.getPrimitives())));
+          }
+          if (code2Layer.getPrimitives().length > 0) {
+            primitives.push(Microsoft.Maps.SpatialMath.locationRectToPolygon(Microsoft.Maps.SpatialMath.Geometry.bounds(code2Layer.getPrimitives())));
+          }
+          map.setView({
+            bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(primitives),
+          });
+
+          updateSimilarity();
+
+          return;
+        };
+
+        // Register event handler.
+        ["change", "keyup"].forEach(function(type) {
+          code1Element.addEventListener(type, handleChange, false);
+          code2Element.addEventListener(type, handleChange, false);
+        });
+
+        // Get query string of URL.
+        var params = new URLSearchParams(window.location.search);
+
+        // Array of query parameter names, corresponding to HTML element IDs.
+        var paramNames = [
+          "code1",
+          "code2",
+        ];
+
+        // Retain query parameter names that are present in query string of URL.
+        var filteredParamNames = paramNames.filter(function(paramName) {
+          return params.has(paramName);
+        });
+
+        // Test if at least 1 query parameter name is present.
+        if (filteredParamNames.length > 0) {
+          // Iterate over query parameter names that are present.
+          filteredParamNames.forEach(function(paramName) {
+            // Set the value of the corresponding HTML element.
+            document.getElementById(paramName).value = params.get(paramName);
+
+            return;
+          });
+        }
+
+        handleChange.call(code1Element);
+        handleChange.call(code2Element);
+
+        return;
+      });
+
+      return;
+    }
+  </script>
+  <script>
+    (function() {
+      "use strict";
+
+      window.addEventListener("load", function() {
+        // Disable form submission.
+        document.querySelector("form").addEventListener("submit", function(event) {
+          event.target.checkValidity();
+          event.preventDefault();
+          event.stopPropagation();
+
+          return false;
+        }, false);
+
+        return;
+      }, false);
+    })();
+  </script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
+</body>
+</html>
