@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>UBID Lookup</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <style>
+    #myMap {
+      margin-bottom: 1em;
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1 class="pt-3">UBID Lookup</h1>
+    <p>Enter your UBID below to view the building on a map.</p>
+    <form autocomplete="off" class="pb-3">
+      <div class="form-group">
+        <label for="code">UBID</label>
+        <input type="text" class="form-control" id="code" name="code" autocomplete="off">
+      </div>
+    </form>
+    <div id="myMap"></div>
+    <p>This page is hosted on behalf of the <a href="https://mde.maryland.gov/programs/air/ClimateChange/Pages/BEPS.aspx" target="_blank">Maryland Department of the Environment (MDE)</a>.</p>
+    <p>Do you have questions? Email the <abbr title="Maryland Department of the Environment">MDE</abbr> Building Decarbonization Team at <a href="mailto:BEPS.MDE@maryland.gov">BEPS.MDE@maryland.gov</a>​​ or call <a href="tel:+14105373183">(410) 537-3183</a>.</p>
+    <hr/>
+    <div class="small">
+      <p>This material was prepared as an account of work sponsored by an agency of the United States Government.  Neither the United States Government nor the United States Department of Energy, nor the Contractor, nor any or their employees, nor any jurisdiction or organization that has cooperated in the development of these materials, <span class="font-italic font-weight-bold">makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness or any information, apparatus, product, software, or process disclosed, or represents that its use would not infringe privately owned rights</span>.</p>
+      <p>Reference herein to any specific commercial product, process, or service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or any agency thereof, or Battelle Memorial Institute. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.</p>
+    </div>
+    <div class="small text-center">
+      <p>PACIFIC NORTHWEST NATIONAL LABORATORY<br/>
+      <span class="font-italic">operated by</span><br/>
+      BATTELLE<br/>
+      <span class="font-italic">for the</span><br/>
+      UNITED STATES DEPARTMENT OF ENERGY<br/>
+      <span class="font-italic">under Contract DE-AC05-76RL01830</span></p>
+    </div>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="/assets/js/pnnl-buildingid.js"></script>
+  <script src="/assets/js/common.js"></script>
+  <script>
+    "use strict";
+
+    /**
+     * Callback to initialize map and event handlers.
+     *
+     * @return {void}
+     */
+    function getMap() {
+      Microsoft.Maps.loadModule(["Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath"], function() {
+        // Initialize map.
+        var map = new Microsoft.Maps.Map("#myMap", {
+          disableBirdseye: true,
+          disableKeyboardInput: true,
+          disableStreetside: true,
+          disableStreetsideAutoCoverage: true,
+          showLocateMeButton: false,
+          showMapTypeSelector: true,
+        });
+
+        // Reference to HTML element; provider of code string.
+        var codeElement = document.getElementById("code");
+
+        // Handler for when value of HTML element is modified.
+        var handleChange = (function() {
+          // Layer for shapes decoded from code string.
+          var codeLayer = new Microsoft.Maps.Layer("code");
+
+          // Add layer to map.
+          map.layers.insert(codeLayer);
+
+          return function(event) {
+            // When event is triggered, clear contents of layer.
+            codeLayer.clear();
+
+            // Get value of HTML element; the code string.
+            var code = codeElement.value.trim();
+
+            // Test if value is blank.
+            if (code.length == 0) {
+              codeElement.classList.remove("is-invalid");
+              codeElement.classList.remove("is-valid");
+
+              // If value is blank, then exit early.
+              return;
+            }
+
+            // Test if value is valid code string.
+            if (!UniqueBuildingIdentification.v3.isValid(code)) {
+              codeElement.classList.remove("is-valid");
+              codeElement.classList.add("is-invalid");
+
+              // If value is invalid code string, then exit early.
+              return;
+            }
+
+            // Value is valid code string.
+            codeElement.classList.remove("is-invalid");
+            codeElement.classList.add("is-valid");
+
+            // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
+            var codeArea = UniqueBuildingIdentification.v3.decode(code);
+
+            // Convert {UniqueBuildingIdentification.v3.CodeArea} to GeoJSON object.
+            //
+            // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
+            var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea), {
+              polylineOptions: {
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+              polygonOptions: {
+                fillColor: "rgba(215, 118, 0, 0.4)",
+                strokeColor: "rgba(215, 118, 0, 1.0)",
+                strokeThickness: 3,
+              },
+            });
+
+            // Add GeoJSON object to map.
+            codeLayer.add(shapes);
+
+            // Calculate midpoint of (bounding box for) centroid.
+            var center = new Microsoft.Maps.Location(codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2), codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2));
+
+            // Initialize pushpin for midpoint of (bounding box for) centroid.
+            var pushpin = new Microsoft.Maps.Pushpin(center, {
+              color: "rgba(166, 63, 30, 0.8)",
+              title: code,
+            });
+
+            // Add pushpin to map.
+            codeLayer.add(pushpin);
+
+            // Adjust map view to display GeoJSON object.
+            map.setView({
+              bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(shapes),
+            });
+
+            return;
+          };
+        })();
+
+        // Register event handler.
+        ["change", "keyup"].forEach(function(type) {
+          codeElement.addEventListener(type, handleChange, false);
+        });
+
+        // Get query string of URL.
+        var params = new URLSearchParams(window.location.search);
+
+        // Array of query parameter names, corresponding to HTML element IDs.
+        var paramNames = [
+          "code",
+        ];
+
+        // Retain query parameter names that are present in query string of URL.
+        var filteredParamNames = paramNames.filter(function(paramName) {
+          return params.has(paramName);
+        });
+
+        // Test if at least 1 query parameter name is present.
+        if (filteredParamNames.length > 0) {
+          // Iterate over query parameter names that are present.
+          filteredParamNames.forEach(function(paramName) {
+            // Set the value of the corresponding HTML element.
+            document.getElementById(paramName).value = params.get(paramName);
+
+            return;
+          });
+
+          handleChange();
+        }
+
+        return;
+      });
+
+      return;
+    }
+  </script>
+  <script>
+    (function() {
+      "use strict";
+
+      window.addEventListener("load", function() {
+        // Disable form submission.
+        document.querySelector("form").addEventListener("submit", function(event) {
+          event.target.checkValidity();
+          event.preventDefault();
+          event.stopPropagation();
+
+          return false;
+        }, false);
+
+        return;
+      }, false);
+    })();
+  </script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
+</body>
+</html>
