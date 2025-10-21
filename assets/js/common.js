@@ -29,27 +29,25 @@ function toGeoJSON(codeArea) {
 
   // Bounding box.
   //
-  // Note: Not included if bounding box coincides with centroid.
-  if ((codeArea.centerOfMass.latitudeHi != codeArea.latitudeHi) || (codeArea.centerOfMass.latitudeLo != codeArea.latitudeLo) || (codeArea.centerOfMass.longitudeHi != codeArea.longitudeHi) || (codeArea.centerOfMass.longitudeLo != codeArea.longitudeLo)) {
-    features.push({
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [codeArea.longitudeLo, codeArea.latitudeLo],
-            [codeArea.longitudeLo, codeArea.latitudeHi],
-            [codeArea.longitudeHi, codeArea.latitudeHi],
-            [codeArea.longitudeHi, codeArea.latitudeLo],
-            [codeArea.longitudeLo, codeArea.latitudeLo],
-          ],
+  // Note: Always included to represent the building footprint.
+  features.push({
+    "type": "Feature",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [codeArea.longitudeLo, codeArea.latitudeLo],
+          [codeArea.longitudeLo, codeArea.latitudeHi],
+          [codeArea.longitudeHi, codeArea.latitudeHi],
+          [codeArea.longitudeHi, codeArea.latitudeLo],
+          [codeArea.longitudeLo, codeArea.latitudeLo],
         ],
-      },
-      "properties": {
-        "name": "bbox",
-      },
-    });
-  }
+      ],
+    },
+    "properties": {
+      "name": "bbox",
+    },
+  });
 
   // North extent.
   //

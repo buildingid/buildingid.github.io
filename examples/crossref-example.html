@@ -150,7 +150,7 @@
             'fill-color': '#d77600',
             'fill-opacity': 0.4
           },
-          'filter': ['all', ['==', '$type', 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
         });
         map.addLayer({
           'id': 'ubid-shape1-outline',
@@ -160,7 +160,7 @@
             'line-color': '#d77600',
             'line-width': 3
           },
-          'filter': ['all', ['==', '$type', 'Polygon'], ['!=', ['get', 'name'], 'centroid']]
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
         });
         var centroidLng1 = codeArea1.centerOfMass.longitudeLo + ((codeArea1.centerOfMass.longitudeHi - codeArea1.centerOfMass.longitudeLo) / 2);
         var centroidLat1 = codeArea1.centerOfMass.latitudeLo + ((codeArea1.centerOfMass.latitudeHi - codeArea1.centerOfMass.latitudeLo) / 2);
@@ -189,7 +189,7 @@
             'fill-color': '#0078d7',
             'fill-opacity': 0.4
           },
-          'filter': ['all', ['==', '$type', 'Polygon'], ['!=', ['get', 'name'], 'centroid']]
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
         });
         map.addLayer({
           'id': 'ubid-shape2-outline',
@@ -199,7 +199,7 @@
             'line-color': '#0078d7',
             'line-width': 3
           },
-          'filter': ['all', ['==', '$type', 'Polygon'], ['!=', ['get', 'name'], 'centroid']]
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
         });
         var centroidLng2 = codeArea2.centerOfMass.longitudeLo + ((codeArea2.centerOfMass.longitudeHi - codeArea2.centerOfMass.longitudeLo) / 2);
         var centroidLat2 = codeArea2.centerOfMass.latitudeLo + ((codeArea2.centerOfMass.latitudeHi - codeArea2.centerOfMass.latitudeLo) / 2);

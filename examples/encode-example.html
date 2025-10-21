@@ -239,7 +239,7 @@
           'fill-color': '#d77600',
           'fill-opacity': 0.4
         },
-        'filter': ['all', ['==', '$type', 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
       });
       map.addLayer({
         'id': 'ubid-shape-outline',
@@ -249,7 +249,7 @@
           'line-color': '#d77600',
           'line-width': 3
         },
-        'filter': ['all', ['==', '$type', 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
       });
       var centroidLng = codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2);
       var centroidLat = codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2);
