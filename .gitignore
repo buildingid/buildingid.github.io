@@ -1,0 +1,20 @@
+# Mapbox configuration file (contains API keys)
+assets/js/config.js
+
+# Environment files
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if using npm)
+node_modules/
+CLAUDE.md
