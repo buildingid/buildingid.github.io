@@ -1,5 +1,5 @@
 # Mapbox configuration file (contains API keys)
-assets/js/config.js
+assets/js/config-dev.js
 
 # Environment files
 .env
