@@ -7,6 +7,10 @@
   <meta name="author" content="">
   <title>Home | Unique Building Identification (UBID)</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css"
+    crossorigin="anonymous" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.2/mapbox-gl-draw.css" rel="stylesheet" />
   <style>
     .jumbotron {
       padding-top: 3rem;
@@ -101,17 +105,18 @@
       background-image: url("/assets/images/encode-example.png");
     }
 
-    .well-known-text-read-example-img {
-      background-image: url("/assets/images/well-known-text-read-example.png");
-    }
+    
   </style>
 </head>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
 <body class="h-100">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">UBID</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div id="myMap"></div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -124,8 +129,8 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdownExamples">
             <a class="dropdown-item" href="/examples/crossref-example.html">Cross-reference Example</a>
             <a class="dropdown-item" href="/examples/decode-example.html">Decode Example</a>
+
             <a class="dropdown-item" href="/examples/encode-example.html">Encode Example</a>
-            <a class="dropdown-item" href="/examples/well-known-text-read-example.html">Well Known Text Read Example</a>
           </div>
         </li>
       </ul>
@@ -167,11 +172,11 @@
             <div class="card mb-4 shadow-sm">
               <div class="card-img-top">
                 <div class="card-img decode-example-img">
-                  <a href="/examples/decode-example.html">Decode Example</a>
+                  <a href="/examples/decode-example.html">Decode Example (Mapbox)</a>
                 </div>
               </div>
               <div class="card-body">
-                <p class="card-text"><span class="font-weight-bold">Decode Example.</span> Decode a UBID code string, then view the shape on the map. View minimum and maximum coordinates for UBID code area.</p>
+                <p class="card-text"><span class="font-weight-bold">Decode Example (Mapbox).</span> Decode a UBID code string, then view the shape on the map. View minimum and maximum coordinates for UBID code area.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <a href="/examples/decode-example.html" class="btn btn-sm btn-outline-secondary">Try it Now</a>
@@ -199,25 +204,9 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-              <div class="card-img-top">
-                <div class="card-img well-known-text-read-example-img">
-                  <a href="/examples/well-known-text-read-example.html">Well Known Text<br>Read Example</a>
-                </div>
-              </div>
-              <div class="card-body">
-                <p class="card-text"><span class="font-weight-bold">Well Known Text Read Example.</span> Decode a Well Known Text string, encode UBID code string, then view the shape on the map.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <a href="/examples/well-known-text-read-example.html" class="btn btn-sm btn-outline-secondary">Try it Now</a>
-                  </div>
-                  <small class="text-muted">Developer-friendly</small>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
+
       </div>
     </div>
   </main>
@@ -228,7 +217,82 @@
       </p>
     </div>
   </footer>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+  <script src="/assets/js/config-main.js"></script>
 </body>
+<script>
+
+  var token = window.MAPBOX_CONFIG.token;
+  var username = window.MAPBOX_CONFIG.username;
+
+  mapboxgl.accessToken = token
+
+  var map = new mapboxgl.Map({
+    container: 'myMap',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-98.5795, 39.8283],
+    zoom: 4
+  });
+  const getV3APIUsage = async (token, username, serviceId) => {
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/accounts/v1/${username}/usage/${serviceId}?access_token=${token}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching v3 usage:', error);
+      return null;
+    }
+  };
+
+  // Check all v3 API usage
+  const checkV3Usage = async () => {
+
+    const v3Services = ['search-v3', 'geocoding-v3', 'directions-v3', 'matrix-v3'];
+    const usageData = {};
+
+    for (const service of v3Services) {
+      const usage = await getV3APIUsage(token, username, service);
+      if (usage) {
+        usageData[service] = usage;
+        console.log(`${service} calls:`, usage.usage?.current_period || 0);
+      }
+    }
+
+    return usageData;
+  };
+
+  // Get all v3 services available for your account
+    const getV3Services = async (token, username) => {
+      try {
+        const response = await fetch(
+          `https://api.mapbox.com/accounts/v1/${username}?access_token=${accessToken}`
+        );
+        const data = await response.json();
+
+        // Filter for v3 services
+        const v3Services = data.services?.filter(service =>
+          service.id.includes('v3') ||
+          service.name.includes('v3') ||
+          service.id.includes('-v3')
+        );
+
+        console.log('Available v3 services:', v3Services);
+        return v3Services;
+      } catch (error) {
+        console.error('Error fetching v3 services:', error);
+        return [];
+      }
+    };
+    
+
+</script>
 </html>

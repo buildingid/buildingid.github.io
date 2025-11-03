@@ -6,7 +6,8 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Cross-reference Example | Examples | Unique Building Identification (UBID)</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" crossorigin="anonymous" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
   <style>
     #myMap {
       margin-bottom: 1em;
@@ -69,236 +70,203 @@
       </div>
     </form>
   </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" integrity="sha256-VLEhs9CPhP4nrGyllTmF3KPGi04HVq5gFGKxGetzkYY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" crossorigin="anonymous"></script>
   <script src="/assets/js/pnnl-buildingid.js"></script>
   <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
   <script>
     "use strict";
+    mapboxgl.accessToken = window.MAPBOX_CONFIG.token;
+    var map = new mapboxgl.Map({
+      container: 'myMap',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-98.5795, 39.8283],
+      zoom: 4
+    });
 
-    /**
-     * Callback to initialize map and event handlers.
-     *
-     * @return {void}
-     */
-    function getMap() {
-      Microsoft.Maps.loadModule(["Microsoft.Maps.GeoJson", "Microsoft.Maps.SpatialMath"], function() {
-        // Initialize map.
-        var map = new Microsoft.Maps.Map("#myMap", {
-          disableBirdseye: true,
-          disableKeyboardInput: true,
-          disablePanning: true,
-          disableScrollWheelZoom: true,
-          disableStreetside: true,
-          disableStreetsideAutoCoverage: true,
-          disableZooming: true,
-          showLocateMeButton: false,
-          showMapTypeSelector: true,
-        });
-
-        // Reference to HTML elements; providers of code strings.
-        var code1Element = document.getElementById("code1");
-        var code2Element = document.getElementById("code2");
-
-        // Layers for shapes decoded from code string.
-        var code1Layer = new Microsoft.Maps.Layer("code1");
-        var code2Layer = new Microsoft.Maps.Layer("code2");
-
-        // Add layer to map.
-        map.layers.insert(code1Layer);
-        map.layers.insert(code2Layer);
-
-        // Reference to HTML element for Jaccard similarity coefficient.
-        var similarityElement = document.getElementById("similarity");
-
-        // Calculate the Jaccard similarity coefficient and update the value of
-        // the HTML element.
-        var updateSimilarity = function() {
-          // Only calculate the Jaccard similarity coefficient if both code
-          // strings are valid.
-          if (code1Element.classList.contains("is-valid") && code2Element.classList.contains("is-valid")) {
-            // Decode code strings to {UniqueBuildingIdentification.v3.CodeArea}s.
-            var codeArea1 = UniqueBuildingIdentification.v3.decode(code1Element.value);
-            var codeArea2 = UniqueBuildingIdentification.v3.decode(code2Element.value);
-
-            // Convert {UniqueBuildingIdentification.v3.CodeArea}s to GeoJSON objects.
-            //
-            // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
-            var shapes1 = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea1));
-            var shapes2 = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea2));
-
-            // Calculate area of intersection.
-            var areaOfIntersection = Microsoft.Maps.SpatialMath.Geometry.area(Microsoft.Maps.SpatialMath.Geometry.intersection(shapes1, shapes2));
-
-            // Calculate area of union.
-            var areaOfUnion = Microsoft.Maps.SpatialMath.Geometry.area(Microsoft.Maps.SpatialMath.Geometry.union(shapes1, shapes2));
-
-            // Calculate "intersection over union" and round to the nearest percentage.
-            similarityElement.value = Math.round((areaOfIntersection / areaOfUnion) * 100.0);
-          } else {
-            similarityElement.value = null;
-          }
-
-          return;
-        }
-
-        // Handler for when value of HTML element is modified.
-        var handleChange = function() {
-          // When event is triggered, clear contents of layer.
-          if (this.getAttribute("name") === "code1") {
-            code1Layer.clear();
-          } else if (this.getAttribute("name") === "code2") {
-            code2Layer.clear();
-          }
-
-          // Get value of HTML element; the code string.
-          var code = this.value.trim();
-
-          // Test if value is blank.
-          if (code.length == 0) {
-            this.classList.remove("is-invalid");
-            this.classList.remove("is-valid");
-
-            updateSimilarity();
-
-            // If value is blank, then exit early.
-            return;
-          }
-
-          // Test if value is valid code string.
-          if (UniqueBuildingIdentification.v3.isValid(code)) {
-            // Do nothing.
-          } else {
-            this.classList.remove("is-valid");
-            this.classList.add("is-invalid");
-
-            updateSimilarity();
-
-            // If value is invalid code string, then exit early.
-            return;
-          }
-
-          // Value is valid code string.
-          this.classList.remove("is-invalid");
-          this.classList.add("is-valid");
-
-          // Decode code string to {UniqueBuildingIdentification.v3.CodeArea}.
-          var codeArea = UniqueBuildingIdentification.v3.decode(code);
-
-          // Convert {UniqueBuildingIdentification.v3.CodeArea} to GeoJSON object.
-          //
-          // Note: The "toGeoJSON" function is exported by the "/assets/js/common.js" file.
-          var shapes = Microsoft.Maps.GeoJson.read(toGeoJSON(codeArea), {
-            polylineOptions: {
-              strokeColor: "rgba(215, 118, 0, 1.0)",
-              strokeThickness: 3,
-            },
-            polygonOptions: {
-              fillColor: "rgba(215, 118, 0, 0.4)",
-              strokeColor: "rgba(215, 118, 0, 1.0)",
-              strokeThickness: 3,
-            },
-          });
-
-          // Add GeoJSON object to map.
-          if (this.getAttribute("name") === "code1") {
-            code1Layer.add(shapes);
-          } else if (this.getAttribute("name") === "code2") {
-            code2Layer.add(shapes);
-          }
-
-          // Calculate midpoint of (bounding box for) centroid.
-          var center = new Microsoft.Maps.Location(codeArea.centerOfMass.latitudeLo + ((codeArea.centerOfMass.latitudeHi - codeArea.centerOfMass.latitudeLo) / 2), codeArea.centerOfMass.longitudeLo + ((codeArea.centerOfMass.longitudeHi - codeArea.centerOfMass.longitudeLo) / 2));
-
-          // Initialize pushpin for midpoint of (bounding box for) centroid.
-          var pushpin = new Microsoft.Maps.Pushpin(center, {
-            color: "rgba(166, 63, 30, 0.8)",
-            title: code,
-          });
-
-          // Add pushpin to map.
-          if (this.getAttribute("name") === "code1") {
-            code1Layer.add(pushpin);
-          } else if (this.getAttribute("name") === "code2") {
-            code2Layer.add(pushpin);
-          }
-
-          // Adjust map view to display GeoJSON object.
-          var primitives = [];
-          if (code1Layer.getPrimitives().length > 0) {
-            primitives.push(Microsoft.Maps.SpatialMath.locationRectToPolygon(Microsoft.Maps.SpatialMath.Geometry.bounds(code1Layer.getPrimitives())));
-          }
-          if (code2Layer.getPrimitives().length > 0) {
-            primitives.push(Microsoft.Maps.SpatialMath.locationRectToPolygon(Microsoft.Maps.SpatialMath.Geometry.bounds(code2Layer.getPrimitives())));
-          }
-          map.setView({
-            bounds: Microsoft.Maps.SpatialMath.Geometry.bounds(primitives),
-          });
-
-          updateSimilarity();
-
-          return;
-        };
-
-        // Register event handler.
-        ["change", "keyup"].forEach(function(type) {
-          code1Element.addEventListener(type, handleChange, false);
-          code2Element.addEventListener(type, handleChange, false);
-        });
-
-        // Get query string of URL.
-        var params = new URLSearchParams(window.location.search);
-
-        // Array of query parameter names, corresponding to HTML element IDs.
-        var paramNames = [
-          "code1",
-          "code2",
-        ];
-
-        // Retain query parameter names that are present in query string of URL.
-        var filteredParamNames = paramNames.filter(function(paramName) {
-          return params.has(paramName);
-        });
-
-        // Test if at least 1 query parameter name is present.
-        if (filteredParamNames.length > 0) {
-          // Iterate over query parameter names that are present.
-          filteredParamNames.forEach(function(paramName) {
-            // Set the value of the corresponding HTML element.
-            document.getElementById(paramName).value = params.get(paramName);
-
-            return;
-          });
-        }
-
-        handleChange.call(code1Element);
-        handleChange.call(code2Element);
-
-        return;
-      });
-
-      return;
+    function removeUbidLayers() {
+      if (map.getLayer('ubid-shape1-layer')) map.removeLayer('ubid-shape1-layer');
+      if (map.getLayer('ubid-shape1-outline')) map.removeLayer('ubid-shape1-outline');
+      if (map.getSource('ubid-shape1')) map.removeSource('ubid-shape1');
+      if (window.ubidMarker1) { window.ubidMarker1.remove(); window.ubidMarker1 = null; }
+      if (map.getLayer('ubid-shape2-layer')) map.removeLayer('ubid-shape2-layer');
+      if (map.getLayer('ubid-shape2-outline')) map.removeLayer('ubid-shape2-outline');
+      if (map.getSource('ubid-shape2')) map.removeSource('ubid-shape2');
+      if (window.ubidMarker2) { window.ubidMarker2.remove(); window.ubidMarker2 = null; }
     }
+
+    function updateSimilarity(geojson1, geojson2) {
+      var similarityElement = document.getElementById("similarity");
+      if (!geojson1 || !geojson2) {
+        similarityElement.value = null;
+        return;
+      }
+      try {
+        var poly1 = geojson1.features.find(f => f.geometry.type === 'Polygon');
+        var poly2 = geojson2.features.find(f => f.geometry.type === 'Polygon');
+        if (!poly1 || !poly2) {
+          similarityElement.value = null;
+          return;
+        }
+        var intersection = turf.intersect(poly1, poly2);
+        var union = turf.union(poly1, poly2);
+        if (!intersection || !union) {
+          similarityElement.value = 0;
+          return;
+        }
+        var areaOfIntersection = turf.area(intersection);
+        var areaOfUnion = turf.area(union);
+        similarityElement.value = Math.round((areaOfIntersection / areaOfUnion) * 100.0);
+      } catch (e) {
+        similarityElement.value = null;
+      }
+    }
+
+    function handleChange() {
+      removeUbidLayers();
+      var code1Element = document.getElementById("code1");
+      var code2Element = document.getElementById("code2");
+      var code1 = code1Element.value.trim();
+      var code2 = code2Element.value.trim();
+      var geojson1 = null, geojson2 = null;
+      if (code1.length > 0 && UniqueBuildingIdentification.v3.isValid(code1)) {
+        code1Element.classList.remove("is-invalid");
+        code1Element.classList.add("is-valid");
+        var codeArea1 = UniqueBuildingIdentification.v3.decode(code1);
+        geojson1 = toGeoJSON(codeArea1);
+        map.addSource('ubid-shape1', {
+          'type': 'geojson',
+          'data': geojson1
+        });
+        map.addLayer({
+          'id': 'ubid-shape1-layer',
+          'type': 'fill',
+          'source': 'ubid-shape1',
+          'paint': {
+            'fill-color': '#d77600',
+            'fill-opacity': 0.4
+          },
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        });
+        map.addLayer({
+          'id': 'ubid-shape1-outline',
+          'type': 'line',
+          'source': 'ubid-shape1',
+          'paint': {
+            'line-color': '#d77600',
+            'line-width': 3
+          },
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        });
+        var centroidLng1 = codeArea1.centerOfMass.longitudeLo + ((codeArea1.centerOfMass.longitudeHi - codeArea1.centerOfMass.longitudeLo) / 2);
+        var centroidLat1 = codeArea1.centerOfMass.latitudeLo + ((codeArea1.centerOfMass.latitudeHi - codeArea1.centerOfMass.latitudeLo) / 2);
+        window.ubidMarker1 = new mapboxgl.Marker({ color: '#a63f1e' })
+          .setLngLat([centroidLng1, centroidLat1])
+          .setPopup(new mapboxgl.Popup().setText(code1))
+          .addTo(map);
+      } else {
+        code1Element.classList.remove("is-valid");
+        code1Element.classList.add("is-invalid");
+      }
+      if (code2.length > 0 && UniqueBuildingIdentification.v3.isValid(code2)) {
+        code2Element.classList.remove("is-invalid");
+        code2Element.classList.add("is-valid");
+        var codeArea2 = UniqueBuildingIdentification.v3.decode(code2);
+        geojson2 = toGeoJSON(codeArea2);
+        map.addSource('ubid-shape2', {
+          'type': 'geojson',
+          'data': geojson2
+        });
+        map.addLayer({
+          'id': 'ubid-shape2-layer',
+          'type': 'fill',
+          'source': 'ubid-shape2',
+          'paint': {
+            'fill-color': '#0078d7',
+            'fill-opacity': 0.4
+          },
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        });
+        map.addLayer({
+          'id': 'ubid-shape2-outline',
+          'type': 'line',
+          'source': 'ubid-shape2',
+          'paint': {
+            'line-color': '#0078d7',
+            'line-width': 3
+          },
+          'filter': ['all', ['==', ['geometry-type'], 'Polygon'], ['==', ['get', 'name'], 'bbox']]
+        });
+        var centroidLng2 = codeArea2.centerOfMass.longitudeLo + ((codeArea2.centerOfMass.longitudeHi - codeArea2.centerOfMass.longitudeLo) / 2);
+        var centroidLat2 = codeArea2.centerOfMass.latitudeLo + ((codeArea2.centerOfMass.latitudeHi - codeArea2.centerOfMass.latitudeLo) / 2);
+        window.ubidMarker2 = new mapboxgl.Marker({ color: '#0078d7' })
+          .setLngLat([centroidLng2, centroidLat2])
+          .setPopup(new mapboxgl.Popup().setText(code2))
+          .addTo(map);
+      } else {
+        code2Element.classList.remove("is-valid");
+        code2Element.classList.add("is-invalid");
+      }
+      // Fit map to bounds if either shape exists
+      var bounds = null;
+      if (geojson1 && geojson1.features.length > 0) {
+        var poly1 = geojson1.features.find(f => f.geometry.type === 'Polygon');
+        if (poly1) {
+          bounds = turf.bbox(poly1);
+        }
+      }
+      if (geojson2 && geojson2.features.length > 0) {
+        var poly2 = geojson2.features.find(f => f.geometry.type === 'Polygon');
+        if (poly2) {
+          if (bounds) {
+            var bounds2 = turf.bbox(poly2);
+            bounds = [
+              Math.min(bounds[0], bounds2[0]),
+              Math.min(bounds[1], bounds2[1]),
+              Math.max(bounds[2], bounds2[2]),
+              Math.max(bounds[3], bounds2[3])
+            ];
+          } else {
+            bounds = turf.bbox(poly2);
+          }
+        }
+      }
+      if (bounds) {
+        map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]], { padding: 40 });
+      }
+      updateSimilarity(geojson1, geojson2);
+    }
+
+    document.getElementById("code1").addEventListener("change", handleChange);
+    document.getElementById("code2").addEventListener("change", handleChange);
+    document.getElementById("code1").addEventListener("keyup", handleChange);
+    document.getElementById("code2").addEventListener("keyup", handleChange);
+
+    var params = new URLSearchParams(window.location.search);
+    ["code1", "code2"].forEach(function(paramName) {
+      if (params.has(paramName)) {
+        document.getElementById(paramName).value = params.get(paramName);
+      }
+    });
+    handleChange();
   </script>
   <script>
     (function() {
       "use strict";
-
       window.addEventListener("load", function() {
-        // Disable form submission.
         document.querySelector("form").addEventListener("submit", function(event) {
           event.target.checkValidity();
           event.preventDefault();
           event.stopPropagation();
-
           return false;
         }, false);
-
         return;
       }, false);
     })();
   </script>
-  <script src="https://www.bing.com/api/maps/mapcontrol?callback=getMap&key=Ar5gihlHYXOKDu8ynbgVrE9VksJDNMyy58K3ncZ_-mZpJZbFLkOvrTYgW3AZ01hZ" async defer></script>
 </body>
 </html>
