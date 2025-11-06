@@ -125,7 +125,8 @@ buildingid.github.io/
 │   └── images/            # Screenshots and assets
 ├── .gitignore            # Excludes config.js
 └── README.md
-```
+```**
+**
 
 ## Features
 
@@ -149,6 +150,66 @@ The site includes several interactive examples:
 
 - **Public Token**: Safe for client-side use, has rate limits, suitable for this project
 - **Secret Token**: Server-side only, never expose in client-side code
+
+## Public vs Secret Mapbox Tokens
+
+Understanding the difference between Mapbox token types is crucial for security and proper usage:
+
+### Public Tokens
+- **Intended for client-side applications** (websites, mobile apps)
+- **Safe to expose** in browser source code or mobile app bundles
+- Start with `pk.` (for "public key")
+- Have **built-in rate limiting** to prevent abuse
+- Can be **restricted by URL/domain** for additional security
+- Used for map display, geocoding, and other client-side features
+
+### Secret Tokens
+- **Server-side only** - never expose in client-side code
+- Start with `sk.` (for "secret key") 
+- **No rate limits** but require secure server environment
+- Used for server-side operations, bulk processing, and administrative tasks
+- **Must be kept confidential** - treat like a password
+
+### Domain Restrictions for Public Tokens
+
+To enhance security and prevent unauthorized usage of your Mapbox token, you can restrict which domains can use your public token:
+
+#### Setting Up URL Restrictions
+
+1. **Log into your Mapbox account** at [account.mapbox.com](https://account.mapbox.com)
+2. **Navigate to Access Tokens** in your account dashboard
+3. **Select your public token** or create a new one
+4. **Click "Add URL restriction"**
+5. **Enter allowed domains** in these formats:
+   - `https://yourdomain.com/*` - Allows all pages on your domain
+   - `https://subdomain.yourdomain.com/*` - Specific subdomain
+   - `http://localhost:*` - Local development (any port)
+   - `https://*.github.io/*` - All GitHub Pages sites
+
+#### Example URL Restrictions
+
+For this UBID demo site, you might configure:
+
+```
+https://buildingid.github.io/*
+https://yourusername.github.io/buildingid.github.io/*
+http://localhost:*
+https://127.0.0.1:*
+```
+
+#### Benefits of Domain Restrictions
+
+- **Prevents unauthorized usage** if your token is discovered
+- **Protects your usage quota** from being consumed by other sites
+- **Adds an extra security layer** beyond just keeping the token private
+- **Required for production applications** to maintain security best practices
+
+#### Important Notes
+
+- Domain restrictions only apply to **public tokens**
+- Always include your development domains (`localhost`, `127.0.0.1`) for testing
+- Use wildcards (`*`) appropriately to cover subpaths
+- Test thoroughly after adding restrictions to ensure your site still works
 
 ### Mapbox Free Tier Limits
 

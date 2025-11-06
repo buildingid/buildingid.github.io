@@ -3,6 +3,6 @@
 // Copy config.example.js to config.js and add your own credentials
 
 window.MAPBOX_CONFIG = {
-  token: 'pk.eyJ1IjoibWljaGFlbHN3ZWVuZXkiLCJhIjoiY21lajd2cnRlMGFzcTJqcTA3aXo1eGhiOCJ9.x6p70dMbb-90WyFA96FYXg',
-  username: 'michaelsweeney'
+  token: 'pk.eyJ1IjoiYnVpbGRpbmdpZCIsImEiOiJjbWhudmtobm0wNHRtMmlvcDIyejdsa29rIn0.EiytQQbYQYiILt-22miOng',
+  username: 'buildingid'
 };
