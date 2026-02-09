@@ -14,7 +14,9 @@
       "WebFetch(domain:app.unpkg.com)",
       "Bash(node:*)",
       "Bash(npm ls:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(git config:*)",
+      "Bash(git remote set-url:*)"
     ],
     "deny": [],
     "ask": []
