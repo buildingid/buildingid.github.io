@@ -5,7 +5,16 @@
       "Bash(python -m http.server:*)",
       "Bash(rm:*)",
       "Bash(rmdir:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "WebFetch(domain:unpkg.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebSearch",
+      "WebFetch(domain:bundlephobia.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:app.unpkg.com)",
+      "Bash(node:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

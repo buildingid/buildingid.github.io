@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
   <title>UBID Lookup</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" />
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
   <style>
     #myMap {
@@ -20,16 +20,16 @@
 <body>
   <main class="container">
     <h1 class="pt-3">UBID Lookup</h1>
-    
+
     <p>Enter your UBID below to view the building on a map.</p>
-    <p style="font-style: italic">
+    <p class="fst-italic">
       Note: If map is not zooming to building location upon page load,
       click on UBID input and and press arrow key to change cursor position.
     </p>
 
     <form autocomplete="off" class="pb-3">
-      <div class="form-group">
-        <label for="code">UBID</label>
+      <div class="mb-3">
+        <label for="code" class="form-label">UBID</label>
         <input type="text" class="form-control" id="code" name="code" autocomplete="off">
       </div>
     </form>
@@ -39,20 +39,19 @@
     <p>Do you have questions? Email the <abbr title="Maryland Department of the Environment">MDE</abbr> Building Decarbonization Team at <a href="mailto:BEPS.MDE@maryland.gov">BEPS.MDE@maryland.gov</a>​​ or call <a href="tel:+14105373183">(410) 537-3183</a>.</p>
     <hr/>
     <div class="small">
-      <p>This material was prepared as an account of work sponsored by an agency of the United States Government.  Neither the United States Government nor the United States Department of Energy, nor the Contractor, nor any or their employees, nor any jurisdiction or organization that has cooperated in the development of these materials, <span class="font-italic font-weight-bold">makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness or any information, apparatus, product, software, or process disclosed, or represents that its use would not infringe privately owned rights</span>.</p>
+      <p>This material was prepared as an account of work sponsored by an agency of the United States Government.  Neither the United States Government nor the United States Department of Energy, nor the Contractor, nor any or their employees, nor any jurisdiction or organization that has cooperated in the development of these materials, <span class="fst-italic fw-bold">makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness or any information, apparatus, product, software, or process disclosed, or represents that its use would not infringe privately owned rights</span>.</p>
       <p>Reference herein to any specific commercial product, process, or service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or any agency thereof, or Battelle Memorial Institute. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.</p>
     </div>
     <div class="small text-center">
       <p>PACIFIC NORTHWEST NATIONAL LABORATORY<br/>
-      <span class="font-italic">operated by</span><br/>
+      <span class="fst-italic">operated by</span><br/>
       BATTELLE<br/>
-      <span class="font-italic">for the</span><br/>
+      <span class="fst-italic">for the</span><br/>
       UNITED STATES DEPARTMENT OF ENERGY<br/>
-      <span class="font-italic">under Contract DE-AC05-76RL01830</span></p>
+      <span class="fst-italic">under Contract DE-AC05-76RL01830</span></p>
     </div>
   </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js" crossorigin="anonymous"></script>
   <script src="/assets/js/pnnl-buildingid.js"></script>
   <script src="/assets/js/common.js"></script>
