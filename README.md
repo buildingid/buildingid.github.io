@@ -111,31 +111,31 @@ buildingid.github.io/
 ├── examples/               # Interactive demo pages
 │   ├── crossref-example.html
 │   ├── decode-example.html
-│   └── encode-example.html
+│   ├── encode-example.html
+│   └── well-known-text-read-example.html
 ├── gov/                    # Custom government implementations
 │   └── maryland/
 │       └── mde.html       # Maryland Dept of Environment
 ├── assets/
 │   ├── js/
 │   │   ├── pnnl-buildingid.js         # Core UBID library
-│   │   ├── pnnl-buildingid-mapbox.js  # Mapbox integration
 │   │   ├── common.js                   # Shared utilities
 │   │   ├── config.example.js           # Configuration template
 │   │   └── config.js                   # Your config (not in git)
 │   └── images/            # Screenshots and assets
 ├── .gitignore            # Excludes config.js
 └── README.md
-```**
-**
+```
 
 ## Features
 
 The site includes several interactive examples:
 
-- **Cross-reference Example**: Compare two UBID codes and see how similar they are
-- **Decode Example**: Decode a UBID code and view it on the map
-- **Encode Example**: Create a UBID code from coordinates
-- **Custom Government Pages**: Specialized implementations for specific agencies
+- **Cross-reference Example**: Compare two UBID codes and calculate their similarity
+- **Decode Example**: Decode a UBID code and view its bounding box, centroid, and area on the map
+- **Encode Example**: Create a UBID code from coordinates or bounding box extents
+- **Well Known Text Read Example**: Parse WKT geometry strings, convert to GeoJSON, and encode as UBID
+- **Custom Government Pages**: Specialized implementations for specific agencies (e.g., Maryland Dept. of Environment)
 
 ## Security and API Usage
 
